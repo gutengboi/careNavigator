@@ -16,12 +16,17 @@ import { BackBtn, Button } from "../../components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons"; // Import Ionicons for Location Icon
 import { COLORS, SIZES } from "../../constants/index";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../../store/authSlice";
 
-const Signup = ({ navigation }) => {
+interface SignupProps {
+  navigation: {
+    goBack: () => void;
+    navigate: (screen: string) => void;
+  };
+}
+const Signup = ({ navigation }: SignupProps) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state: any) => state.auth);
@@ -49,7 +54,8 @@ const Signup = ({ navigation }) => {
     dispatch(signup(values))
       .unwrap()
       .then(() => {
-        navigation.replace("Login");
+        // Navigate to VerifyOTP screen and pass the email as a parameter
+        navigation.replace("VerifyOTP", { email: values.email });
       })
       .catch((errorMessage) => {
         Alert.alert("Signup Error", errorMessage);
@@ -63,9 +69,6 @@ const Signup = ({ navigation }) => {
       .required("Required"),
     email: Yup.string()
       .email("Provide a valid email address")
-      .required("Required"),
-    location: Yup.string()
-      .min(3, "Provide a valid location")
       .required("Required"),
     username: Yup.string()
       .min(3, "Provide a valid username")
@@ -81,12 +84,11 @@ const Signup = ({ navigation }) => {
             source={require("../../assets/images/bk.png")}
             style={styles.cover}
           />
-          <Text style={styles.title}>Unlimited Luxurious Products</Text>
+          <Text style={styles.title}>Sign Up to CareNavigator</Text>
           <Formik
             initialValues={{
               email: "",
               password: "",
-              location: "",
               username: "",
             }}
             validationSchema={validationSchema}
@@ -161,34 +163,6 @@ const Signup = ({ navigation }) => {
                 </View>
 
                 <View style={styles.wrapper}>
-                  <Text style={styles.label}>Location</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.location ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
-                    <Ionicons
-                      name="location-outline"
-                      size={20}
-                      color={COLORS.gray}
-                      style={styles.iconStyle}
-                    />
-                    <TextInput
-                      placeholder="Enter Location"
-                      onFocus={() => setFieldTouched("location")}
-                      onBlur={handleBlur("location")}
-                      value={values.location}
-                      onChangeText={handleChange("location")}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      style={{ flex: 1 }}
-                    />
-                  </View>
-                  {touched.location && errors.location && (
-                    <Text style={styles.errorMessage}>{errors.location}</Text>
-                  )}
-                </View>
-                <View style={styles.wrapper}>
                   <Text style={styles.label}>Password</Text>
                   <View
                     style={styles.inputWrapper(
@@ -238,7 +212,6 @@ const Signup = ({ navigation }) => {
         </View>
       </SafeAreaView>
 
-      
       <Modal transparent={true} visible={loading}>
         <View style={styles.modalBackground}>
           <ActivityIndicator size="large" color={COLORS.primary} />
@@ -249,48 +222,48 @@ const Signup = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    cover: {
-        height: SIZES.height / 3,
-        width: SIZES.width - 60,
-        resizeMode: "contain",
-        marginBottom: SIZES.xxLarge,
-      },
-      title: {
-        fontFamily: "bold",
-        fontSize: SIZES.xLarge - 2,
-        color: COLORS.primary,
-        alignItems: "center",
-        marginBottom: SIZES.xxLarge,
-      },
-      wrapper: {
-        marginBottom: 20,
-      },
-      label: {
-        fontFamily: "regular",
-        fontSize: SIZES.xSmall,
-        marginBottom: 5,
-        marginEnd: 5,
-        textAlign: "left"
-      },
-      inputWrapper: (borderColor) => ({
-        borderColor: borderColor,
-        backgroundColor: COLORS.lightWhite,
-        borderWidth: 1,
-        height: 50,
-        borderRadius: 12,
-        flexDirection: "row",
-        paddingHorizontal: 15,
-        alignItems: "center",
-      }),
-      iconStyle: {
-        marginRight: 10,
-      },
-      errorMessage: {
-        color: COLORS.red,
-        marginTop: 5,
-        marginLeft: 5,
-        fontSize: SIZES.xSmall,
-      },
+  cover: {
+    height: SIZES.height / 3,
+    width: SIZES.width - 60,
+    resizeMode: "contain",
+    marginBottom: SIZES.xxLarge,
+  },
+  title: {
+    fontFamily: "bold",
+    fontSize: SIZES.xLarge - 2,
+    color: COLORS.primary,
+    alignItems: "center",
+    marginBottom: SIZES.xxLarge,
+  },
+  wrapper: {
+    marginBottom: 20,
+  },
+  label: {
+    fontFamily: "regular",
+    fontSize: SIZES.xSmall,
+    marginBottom: 5,
+    marginEnd: 5,
+    textAlign: "left",
+  },
+  inputWrapper: (borderColor) => ({
+    borderColor: borderColor,
+    backgroundColor: COLORS.lightWhite,
+    borderWidth: 1,
+    height: 50,
+    borderRadius: 12,
+    flexDirection: "row",
+    paddingHorizontal: 15,
+    alignItems: "center",
+  }),
+  iconStyle: {
+    marginRight: 10,
+  },
+  errorMessage: {
+    color: COLORS.red,
+    marginTop: 5,
+    marginLeft: 5,
+    fontSize: SIZES.xSmall,
+  },
   modalBackground: {
     flex: 1,
     justifyContent: "center",

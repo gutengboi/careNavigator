@@ -23,6 +23,8 @@ const Home = () => {
 
   console.log(user);
 
+  //console.log(user?.username, ": omoooo");
+
   useEffect(() => {
     const updateGreeting = () => {
       const currentHour = new Date().getHours();
@@ -132,7 +134,7 @@ const Home = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.headerbox}
-                onPress={() => navigation.navigate("ComingSoon")}
+                onPress={() => navigation.navigate("LabTest")}
               >
                 <Image
                   source={require("../../assets/images/testTubeRack.png")}
@@ -220,13 +222,16 @@ const Home = () => {
             // showsHorizontalScrollIndicator={false}
             style={styles.horizontalScrollContainer}
           >
-            <View style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate("HealthService")}
+            >
               <Text style={styles.cardText}>Health Service</Text>
               <Image
                 source={require("../../assets/images/medicalHistory.png")}
                 style={{ height: 50, width: 50 }}
               />
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.card}
               onPress={() => navigation.navigate("Appointment")}
@@ -242,14 +247,20 @@ const Home = () => {
           </View> */}
           </View>
           <View style={styles.row}>
-            <TouchableOpacity style={styles.box} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate("HealthSummary")}
+            >
               <Image
                 source={require("../../assets/images/medicalId.png")}
                 style={{ height: 50, width: 50 }}
               />
               <Text style={styles.title}>Health summary</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.box} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate("MedicalHistory")}
+            >
               <Image
                 source={require("../../assets/images/medicalHistory.png")}
                 style={{ height: 50, width: 50 }}
@@ -268,14 +279,20 @@ const Home = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
-            <TouchableOpacity style={styles.box} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate("PastMedication")}
+            >
               <Image
                 source={require("../../assets/images/medicine.png")}
                 style={{ height: 50, width: 50 }}
               />
               <Text style={styles.title}>Past Medication</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.box} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => navigation.navigate("MedicalReport")}
+            >
               <Image
                 source={require("../../assets/images/healthReport.png")}
                 style={{ height: 50, width: 50 }}
@@ -284,7 +301,7 @@ const Home = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.box}
-              onPress={() => navigation.navigate("DoctorProfile")}
+              onPress={() => navigation.navigate("DoctorScreen")}
             >
               <Image
                 source={require("../../assets/images/stethoscope.png")}

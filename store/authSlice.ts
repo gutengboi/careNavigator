@@ -23,6 +23,10 @@ const initialState: AuthState = {
   error: null,
 };
 
+// const APP_TOKEN = "my-App-token";
+// const STREAM_TOKEN_KEY = "my-stream-token";
+//export const API_URL = process.env.EXPO_PUBLIC_SERVER_URL;
+
 export const login = createAsyncThunk<
   User,
   { email: string; password: string },
@@ -34,6 +38,7 @@ export const login = createAsyncThunk<
     await AsyncStorage.setItem("user", JSON.stringify(user));
     return user;
   } catch (error) {
+    console.log(error);
     return rejectWithValue(
       error.response?.data?.message || "Invalid email or password"
     );
@@ -42,23 +47,82 @@ export const login = createAsyncThunk<
 
 export const signup = createAsyncThunk<
   User,
-  { email: string; password: string; username: string; location: string },
+  { email: string; password: string; username: string; },
   { rejectValue: string }
->("auth/signup", async ({ email, password, username, location }, { rejectWithValue }) => {
+>(
+  "auth/signup",
+  async ({ email, password, username }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/register`, {
+        email,
+        password,
+        username,
+      });
+      const user = response.data;
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+      return user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Signup failed");
+    }
+  }
+);
+
+export const verifyRegistrationOTP = createAsyncThunk<
+  void,
+  { email: string; otp: string },
+  { rejectValue: string }
+>("auth/verifyRegistrationOTP", async ({ email, otp }, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, {
-      email,
-      password,
-      username,
-      location,
-    });
-    const user = response.data;
-    await AsyncStorage.setItem("user", JSON.stringify(user));
-    return user;
+    await axios.post(`${API_URL}/verify-registration-otp`, { email, otp });
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || "Invalid OTP");
+  }
+});
+
+export const forgotPassword = createAsyncThunk<
+  void,
+  { email: string },
+  { rejectValue: string }
+>("auth/forgotPassword", async ({ email }, { rejectWithValue }) => {
+  try {
+    await axios.post(`${API_URL}/forgot-password`, { email });
   } catch (error) {
     return rejectWithValue(
-      error.response?.data?.message || "Signup failed"
+      error.response?.data?.message || "Failed to send reset OTP."
     );
+  }
+});
+
+export const resetPassword = createAsyncThunk<
+  void,
+  { email: string; otp: string; newPassword: string },
+  { rejectValue: string }
+>(
+  "auth/resetPassword",
+  async ({ email, otp, newPassword }, { rejectWithValue }) => {
+    try {
+      await axios.post(`${API_URL}/reset-password`, {
+        email,
+        otp,
+        newPassword,
+      });
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to reset password."
+      );
+    }
+  }
+);
+
+export const verifyOTP = createAsyncThunk<
+  void,
+  { email: string; otp: string },
+  { rejectValue: string }
+>("auth/verifyOTP", async ({ email, otp }, { rejectWithValue }) => {
+  try {
+    await axios.post(`${API_URL}/verify-otp`, { email, otp });
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || "Invalid OTP");
   }
 });
 
@@ -128,6 +192,54 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(verifyOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyOTP.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.user = null;
+      })
+      .addCase(verifyRegistrationOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyRegistrationOTP.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyRegistrationOTP.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
