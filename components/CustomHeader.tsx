@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: COLORS.primary,
     flex: 1,
     textAlign: "center",
   },

@@ -27,7 +27,7 @@ interface FormValues {
 
 const LoginPage = ({ navigation }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false); 
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const { isLoading, error, user } = useSelector((state: any) => state.auth);
 
@@ -171,6 +171,16 @@ const LoginPage = ({ navigation }) => {
                     <Text style={styles.errorMessage}>{errors.password}</Text>
                   )}
                 </View>
+
+                {/* Forget Password Text */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ForgetPassword")}
+                >
+                  <Text style={styles.forgetPasswordText}>
+                    Forget Password?
+                  </Text>
+                </TouchableOpacity>
+
                 <Button
                   loader={isLoading}
                   title="L O G I N"
@@ -201,7 +211,7 @@ const LoginPage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   cover: {
-    height: SIZES.height / 3,
+    height: SIZES.height / 3.5,
     width: SIZES.width - 60,
     resizeMode: "contain",
     marginBottom: SIZES.xxLarge,
@@ -252,6 +262,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Adds a translucent dark background
+  },
+  forgetPasswordText: {
+    color: COLORS.primary,
+    textAlign: "right",
+    marginBottom: 20,
+    marginTop: 10,
   },
 });
 

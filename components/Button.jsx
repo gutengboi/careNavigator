@@ -6,18 +6,19 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React from "react";
-import { COLORS, SIZES } from "../constants";
+import { COLORS } from "../constants";
 
 const Button = ({ title, onPress, isValid, loader }) => {
   return (
     <TouchableOpacity
-      onPress={onPress}
-      style={styles.btnStyle(!isValid ? COLORS.gray : COLORS.primary)}
+      onPress={isValid ? onPress : null}
+      style={styles.btnStyle(isValid ? COLORS.primary : COLORS.gray)}
+      disabled={!isValid}
     >
       {!loader ? (
         <Text style={styles.BtnText}>{title}</Text>
       ) : (
-        <ActivityIndicator />
+        <ActivityIndicator color={COLORS.white} size="small" /> // Set color and size
       )}
     </TouchableOpacity>
   );
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   btnStyle: (backgroundColor) => ({
     height: 50,
     width: "100%",
-    backgroundColor: backgroundColor, // Make sure to define COLORS.primary in your constants
+    backgroundColor: backgroundColor,
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,

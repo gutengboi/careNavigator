@@ -8,19 +8,20 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-
 import { Ionicons, Fontisto } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native"; // Importing useNavigation for navigation
 
 const AppointmentScreen = () => {
+  const navigation = useNavigation(); // Initialize navigation
   const [selectedTab, setSelectedTab] = useState<
     "Upcoming" | "Completed" | "Canceled"
   >("Upcoming");
 
-  const renderAppointment = () => {
+  const renderAppointment = (status: "Upcoming" | "Completed" | "Canceled") => {
     return (
       <View style={styles.appointmentCard}>
         <Image
-          source={{ uri: "https://via.placeholder.com/50" }}
+          source={{ uri: "https://health.gov/sites/default/files/styles/600_wide/public/2022-06/cadqt.jpg?itok=zn27s5mX" }}
           style={styles.doctorImage}
         />
         <View style={styles.appointmentInfo}>
@@ -40,15 +41,53 @@ const AppointmentScreen = () => {
               </View>
               <Text style={styles.detailText}>5:00 PM</Text>
             </View>
-            <Text style={styles.statusConfirmed}> ● Confirmed</Text>
+            {status === "Upcoming" && (
+              <Text style={styles.statusConfirmed}> ● Confirmed</Text>
+            )}
+            {status === "Completed" && (
+              <Text style={styles.statusCompleted}> ● Completed</Text>
+            )}
+            {status === "Canceled" && (
+              <Text style={styles.statusCanceled}> ● Canceled</Text>
+            )}
           </View>
+
+          {/* Cancellation reason as a button */}
+          {status === "Canceled" && (
+            <TouchableOpacity
+              style={styles.reasonButton}
+              onPress={() => navigation.navigate("CancelAppointment")} //  Navigate to the cancellation reason screen
+            >
+              <Text style={styles.reasonButtonText}>
+                Reason: Appointment was Canceled
+              </Text>
+            </TouchableOpacity>
+          )}
+
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.rescheduleButton}>
-              <Text style={styles.buttonText}>Reschedule</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton}>
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
+            {status === "Upcoming" && (
+              <>
+                <TouchableOpacity style={styles.rescheduleButton}>
+                  <Text style={styles.buttonText}>Reschedule</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cancelButton}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+              </>
+            )}
+            {status === "Completed" && (
+              <TouchableOpacity
+                style={styles.reviewButton}
+                onPress={() => navigation.navigate("ReviewScreen")}
+              >
+                <Text style={styles.buttonText}>Review</Text>
+              </TouchableOpacity>
+            )}
+            {status === "Canceled" && (
+              <TouchableOpacity style={styles.rebookButton}>
+                <Text style={styles.buttonText}>Rebook</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -108,9 +147,9 @@ const AppointmentScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Render appointment cards based on the selected tab */}
-      {selectedTab === "Upcoming" && renderAppointment()}
-      {/* You can add more render logic for 'Completed' and 'Canceled' tabs */}
+      {selectedTab === "Upcoming" && renderAppointment("Upcoming")}
+      {selectedTab === "Completed" && renderAppointment("Completed")}
+      {selectedTab === "Canceled" && renderAppointment("Canceled")}
     </ScrollView>
   );
 };
@@ -200,7 +239,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     marginRight: 4,
-    padding: 5
+    padding: 5,
   },
   detailText: {
     fontSize: 12,
@@ -211,10 +250,32 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "medium",
   },
+  statusCompleted: {
+    color: "blue",
+    fontSize: 12,
+    fontFamily: "medium",
+  },
+  statusCanceled: {
+    color: "red",
+    fontSize: 12,
+    fontFamily: "medium",
+  },
+  reasonButton: {
+    marginVertical: 8,
+    padding: 10,
+    right: 35,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 5,
+  },
+  reasonButtonText: {
+    fontSize: 12,
+    color: COLORS.primary,
+    textAlign: "center",
+  },
   buttons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    right: 65,
+    right: 35,
   },
   rescheduleButton: {
     backgroundColor: COLORS.primary,
@@ -225,6 +286,18 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: "#ccc",
+    padding: 8,
+    borderRadius: 8,
+    flex: 1,
+  },
+  reviewButton: {
+    backgroundColor: COLORS.primary,
+    padding: 8,
+    borderRadius: 8,
+    flex: 1,
+  },
+  rebookButton: {
+    backgroundColor: COLORS.secondary,
     padding: 8,
     borderRadius: 8,
     flex: 1,
