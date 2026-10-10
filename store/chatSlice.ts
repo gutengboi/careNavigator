@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { API_KEY } from "../config/auth";
+import { OPENAI_API_KEY } from "../config/auth";
 
 interface Message {
   id: string;
@@ -42,7 +42,7 @@ export const sendMessage = createAsyncThunk<
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${API_KEY}`,
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
         },
       }
     );

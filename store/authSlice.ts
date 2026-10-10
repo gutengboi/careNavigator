@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { API_URL } from "../config/auth";
+import { requestWithRetry, getErrorMessage } from "../utils/apiClient";
 
 interface User {
   email: string;
@@ -33,15 +32,16 @@ export const login = createAsyncThunk<
   { rejectValue: string }
 >("auth/login", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, { email, password });
-    const user = response.data;
+    const user = await requestWithRetry({
+      method: "post",
+      url: "/login",
+      data: { email, password },
+    });
     await AsyncStorage.setItem("user", JSON.stringify(user));
     return user;
   } catch (error) {
     console.log(error);
-    return rejectWithValue(
-      error.response?.data?.message || "Invalid email or password"
-    );
+    return rejectWithValue(getErrorMessage(error, "Invalid email or password"));
   }
 });
 
@@ -53,16 +53,15 @@ export const signup = createAsyncThunk<
   "auth/signup",
   async ({ email, password, username }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/register`, {
-        email,
-        password,
-        username,
+      const user = await requestWithRetry({
+        method: "post",
+        url: "/register",
+        data: { email, password, username },
       });
-      const user = response.data;
       await AsyncStorage.setItem("user", JSON.stringify(user));
       return user;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Signup failed");
+      return rejectWithValue(getErrorMessage(error, "Signup failed"));
     }
   }
 );
@@ -73,9 +72,13 @@ export const verifyRegistrationOTP = createAsyncThunk<
   { rejectValue: string }
 >("auth/verifyRegistrationOTP", async ({ email, otp }, { rejectWithValue }) => {
   try {
-    await axios.post(`${API_URL}/verify-registration-otp`, { email, otp });
+    await requestWithRetry({
+      method: "post",
+      url: "/verify-registration-otp",
+      data: { email, otp },
+    });
   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || "Invalid OTP");
+    return rejectWithValue(getErrorMessage(error, "Invalid OTP"));
   }
 });
 
@@ -85,11 +88,13 @@ export const forgotPassword = createAsyncThunk<
   { rejectValue: string }
 >("auth/forgotPassword", async ({ email }, { rejectWithValue }) => {
   try {
-    await axios.post(`${API_URL}/forgot-password`, { email });
+    await requestWithRetry({
+      method: "post",
+      url: "/forgot-password",
+      data: { email },
+    });
   } catch (error) {
-    return rejectWithValue(
-      error.response?.data?.message || "Failed to send reset OTP."
-    );
+    return rejectWithValue(getErrorMessage(error, "Failed to send reset OTP."));
   }
 });
 
@@ -101,14 +106,14 @@ export const resetPassword = createAsyncThunk<
   "auth/resetPassword",
   async ({ email, otp, newPassword }, { rejectWithValue }) => {
     try {
-      await axios.post(`${API_URL}/reset-password`, {
-        email,
-        otp,
-        newPassword,
+      await requestWithRetry({
+        method: "post",
+        url: "/reset-password",
+        data: { email, otp, newPassword },
       });
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to reset password."
+        getErrorMessage(error, "Failed to reset password.")
       );
     }
   }
@@ -120,9 +125,13 @@ export const verifyOTP = createAsyncThunk<
   { rejectValue: string }
 >("auth/verifyOTP", async ({ email, otp }, { rejectWithValue }) => {
   try {
-    await axios.post(`${API_URL}/verify-otp`, { email, otp });
+    await requestWithRetry({
+      method: "post",
+      url: "/verify-otp",
+      data: { email, otp },
+    });
   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || "Invalid OTP");
+    return rejectWithValue(getErrorMessage(error, "Invalid OTP"));
   }
 });
 
