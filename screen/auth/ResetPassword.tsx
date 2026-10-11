@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  Alert,
-  StyleSheet,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, TextInput, Text, Alert, StyleSheet, Image, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -15,7 +7,7 @@ import { resetPassword } from "../../store/authSlice"; // Adjust the path to you
 import { COLORS, SIZES } from "@/constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BackBtn, Button } from "@/components"; // Use your custom Button component here
-import { RootState } from "@/store/store"; // Adjust if needed
+import { RootState, AppDispatch } from "@/store/store"; // Adjust if needed
 
 interface ResetPasswordProps {
   route: {
@@ -37,7 +29,7 @@ interface ResetPasswordValues {
 
 const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
   const { email, otp } = route.params; // Get the email and OTP passed from OTPScreen
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
 
   const handleResetPassword = async (values: ResetPasswordValues) => {
@@ -82,31 +74,19 @@ const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
           <BackBtn onPress={() => navigation.goBack()} />
         </View>
 
-        <Image
-          source={require("../../assets/images/resetPass.png")}
-          style={styles.image}
-        />
+        <Image source={require("../../assets/images/resetPass.png")} style={styles.image} />
 
         <Formik
           initialValues={{ newPassword: "", confirmPassword: "" }}
           validationSchema={validationSchema}
           onSubmit={handleResetPassword}
         >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View>
               <View style={styles.wrapper}>
                 <Text style={styles.label}>New Password</Text>
                 <View
-                  style={styles.inputWrapper(
-                    touched.newPassword ? COLORS.secondary : COLORS.offwhite
-                  )}
+                  style={inputWrapper(touched.newPassword ? COLORS.secondary : COLORS.offwhite)}
                 >
                   <MaterialCommunityIcons
                     name="lock-outline"
@@ -131,9 +111,7 @@ const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
               <View style={styles.wrapper}>
                 <Text style={styles.label}>Confirm Password</Text>
                 <View
-                  style={styles.inputWrapper(
-                    touched.confirmPassword ? COLORS.secondary : COLORS.offwhite
-                  )}
+                  style={inputWrapper(touched.confirmPassword ? COLORS.secondary : COLORS.offwhite)}
                 >
                   <MaterialCommunityIcons
                     name="lock-outline"
@@ -151,9 +129,7 @@ const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
                   />
                 </View>
                 {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={styles.errorMessage}>
-                    {errors.confirmPassword}
-                  </Text>
+                  <Text style={styles.errorMessage}>{errors.confirmPassword}</Text>
                 )}
               </View>
 
@@ -177,6 +153,17 @@ const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
   );
 };
 
+const inputWrapper = (borderColor: string) => ({
+  borderColor: borderColor,
+  backgroundColor: COLORS.lightWhite,
+  borderWidth: 1,
+  height: 50,
+  borderRadius: 12,
+  flexDirection: "row" as const,
+  paddingHorizontal: 15,
+  alignItems: "center" as const,
+});
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -199,16 +186,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: "left",
   },
-  inputWrapper: (borderColor: string) => ({
-    borderColor: borderColor,
-    backgroundColor: COLORS.lightWhite,
-    borderWidth: 1,
-    height: 50,
-    borderRadius: 12,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-    alignItems: "center",
-  }),
   iconStyle: {
     marginRight: 10,
   },
