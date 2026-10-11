@@ -19,16 +19,17 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../constants/index";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/authSlice";
+import type { AppDispatch } from "../../store/store";
 
 interface FormValues {
   email: string;
   password: string;
 }
 
-const LoginPage = ({ navigation }) => {
+const LoginPage = ({ navigation }: { navigation: any }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { isLoading, error, user } = useSelector((state: any) => state.auth);
 
   const invalidForm = () => {
@@ -46,7 +47,7 @@ const LoginPage = ({ navigation }) => {
           onPress: () => {},
         },
       ],
-      { defaultIndex: 1, cancelable: false }
+      { cancelable: false }
     );
   };
 
@@ -71,9 +72,7 @@ const LoginPage = ({ navigation }) => {
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password must be 20 characters or less")
       .required("Required"),
-    email: Yup.string()
-      .email("Provide a valid email address")
-      .required("Required"),
+    email: Yup.string().email("Provide a valid email address").required("Required"),
   });
 
   return (
@@ -81,10 +80,7 @@ const LoginPage = ({ navigation }) => {
       <SafeAreaView style={{ marginHorizontal: 20 }}>
         <View>
           <BackBtn onPress={() => navigation.goBack()} />
-          <Image
-            source={require("../../assets/images/bk.png")}
-            style={styles.cover}
-          />
+          <Image source={require("../../assets/images/bk.png")} style={styles.cover} />
           <Text style={styles.title}>Welcome Back</Text>
           <Formik
             initialValues={{
@@ -107,11 +103,7 @@ const LoginPage = ({ navigation }) => {
               <View>
                 <View style={styles.wrapper}>
                   <Text style={styles.label}>Email</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.email ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
+                  <View style={inputWrapper(touched.email ? COLORS.secondary : COLORS.offwhite)}>
                     <MaterialCommunityIcons
                       name="email-outline"
                       size={20}
@@ -135,11 +127,7 @@ const LoginPage = ({ navigation }) => {
                 </View>
                 <View style={styles.wrapper}>
                   <Text style={styles.label}>Password</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.password ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
+                  <View style={inputWrapper(touched.password ? COLORS.secondary : COLORS.offwhite)}>
                     <MaterialCommunityIcons
                       name="lock-outline"
                       size={20}
@@ -155,13 +143,9 @@ const LoginPage = ({ navigation }) => {
                       secureTextEntry={!isPasswordVisible}
                       style={{ flex: 1 }}
                     />
-                    <TouchableOpacity
-                      onPress={() => setPasswordVisible(!isPasswordVisible)}
-                    >
+                    <TouchableOpacity onPress={() => setPasswordVisible(!isPasswordVisible)}>
                       <MaterialCommunityIcons
-                        name={
-                          isPasswordVisible ? "eye-outline" : "eye-off-outline"
-                        }
+                        name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
                         size={20}
                         color={COLORS.gray}
                       />
@@ -173,12 +157,8 @@ const LoginPage = ({ navigation }) => {
                 </View>
 
                 {/* Forget Password Text */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("ForgetPassword")}
-                >
-                  <Text style={styles.forgetPasswordText}>
-                    Forget Password?
-                  </Text>
+                <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
+                  <Text style={styles.forgetPasswordText}>Forget Password?</Text>
                 </TouchableOpacity>
 
                 <Button
@@ -188,10 +168,7 @@ const LoginPage = ({ navigation }) => {
                   isValid={isValid}
                 />
 
-                <Text
-                  style={styles.registration}
-                  onPress={() => navigation.navigate("Signup")}
-                >
+                <Text style={styles.registration} onPress={() => navigation.navigate("Signup")}>
                   Register
                 </Text>
               </View>
@@ -208,6 +185,17 @@ const LoginPage = ({ navigation }) => {
     </ScrollView>
   );
 };
+
+const inputWrapper = (borderColor: string) => ({
+  borderColor: borderColor,
+  backgroundColor: COLORS.lightWhite,
+  borderWidth: 1,
+  height: 50,
+  borderRadius: 12,
+  flexDirection: "row" as const,
+  paddingHorizontal: 15,
+  alignItems: "center" as const,
+});
 
 const styles = StyleSheet.create({
   cover: {
@@ -233,16 +221,6 @@ const styles = StyleSheet.create({
     marginEnd: 5,
     textAlign: "left",
   },
-  inputWrapper: (borderColor) => ({
-    borderColor: borderColor,
-    backgroundColor: COLORS.lightWhite,
-    borderWidth: 1,
-    height: 50,
-    borderRadius: 12,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-    alignItems: "center",
-  }),
   iconStyle: {
     marginRight: 10,
   },
