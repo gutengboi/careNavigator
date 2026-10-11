@@ -1,36 +1,20 @@
 import React, { useRef } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Alert,
-  StyleSheet,
-  ScrollView,
-  Image,
-} from "react-native";
+import { View, Text, TextInput, Alert, StyleSheet, ScrollView, Image } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyRegistrationOTP } from "../../store/authSlice";
 import { BackBtn, Button } from "../../components"; // Custom button component
 import { COLORS, SIZES } from "../../constants"; // Adjust according to your project
-import { RootState } from "@/store/store"; // Adjust based on your store setup
+import { RootState, AppDispatch } from "@/store/store"; // Adjust based on your store setup
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-interface VerifyOTPProps {
-  route: {
-    params: {
-      email: string; // Email passed from the Signup screen
-    };
-  };
-  navigation: {
-    goBack: () => void;
-    navigate: (screen: string) => void;
-  };
-}
+type VerifyOTPProps = NativeStackScreenProps<RootStackParamList, "VerifyOTP">;
 
 const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
   const { email } = route.params;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
 
   // Input refs to move between inputs automatically
@@ -57,9 +41,7 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
   };
 
   const validationSchema = Yup.object({
-    otp: Yup.string()
-      .required("OTP is required")
-      .length(4, "OTP must be 4 digits"),
+    otp: Yup.string().required("OTP is required").length(4, "OTP must be 4 digits"),
   });
 
   return (
@@ -69,17 +51,12 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
           <BackBtn onPress={() => navigation.goBack()} />
         </View>
 
-        <Image
-          source={require("../../assets/images/OTPVerify.png")}
-          style={styles.image}
-        />
+        <Image source={require("../../assets/images/OTPVerify.png")} style={styles.image} />
 
         <Text style={styles.title}>Verify Your OTP</Text>
         <Text style={styles.subtitle}>
           Please enter the OTP sent to your email:
-          <Text style={{ fontSize: SIZES.medium - 2, fontWeight: "bold" }}>
-            {email}
-          </Text>
+          <Text style={{ fontSize: SIZES.medium - 2, fontWeight: "bold" }}>{email}</Text>
         </Text>
 
         <Formik
@@ -87,15 +64,7 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
           validationSchema={validationSchema}
           onSubmit={handleVerifyOTP}
         >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-            setFieldValue,
-          }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => (
             <View>
               <View style={styles.wrapper}>
                 <View style={styles.otpContainer}>
@@ -115,13 +84,8 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
                     keyboardType="number-pad"
                     maxLength={1}
                     onChangeText={(text) => {
-                      setFieldValue(
-                        "otp",
-                        values.otp.charAt(0) + text + values.otp.slice(2)
-                      );
-                      text
-                        ? input3Ref.current?.focus()
-                        : input1Ref.current?.focus();
+                      setFieldValue("otp", values.otp.charAt(0) + text + values.otp.slice(2));
+                      text ? input3Ref.current?.focus() : input1Ref.current?.focus();
                     }}
                   />
                   <TextInput
@@ -130,13 +94,8 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
                     keyboardType="number-pad"
                     maxLength={1}
                     onChangeText={(text) => {
-                      setFieldValue(
-                        "otp",
-                        values.otp.slice(0, 2) + text + values.otp.slice(3)
-                      );
-                      text
-                        ? input4Ref.current?.focus()
-                        : input2Ref.current?.focus();
+                      setFieldValue("otp", values.otp.slice(0, 2) + text + values.otp.slice(3));
+                      text ? input4Ref.current?.focus() : input2Ref.current?.focus();
                     }}
                   />
                   <TextInput
@@ -151,9 +110,7 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
                     onBlur={handleBlur("otp")}
                   />
                 </View>
-                {touched.otp && errors.otp && (
-                  <Text style={styles.errorMessage}>{errors.otp}</Text>
-                )}
+                {touched.otp && errors.otp && <Text style={styles.errorMessage}>{errors.otp}</Text>}
               </View>
 
               <Button

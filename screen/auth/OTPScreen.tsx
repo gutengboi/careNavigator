@@ -1,24 +1,25 @@
 import React, { useRef } from "react";
-import { View, TextInput, Text, Alert, StyleSheet, Image,KeyboardAvoidingView,ScrollView } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  Alert,
+  StyleSheet,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { verifyOTP } from "../../store/authSlice";
 import { BackBtn, Button } from "@/components";
-import { RootState } from "@/store/store";
+import { RootState, AppDispatch } from "@/store/store";
 import { SIZES } from "@/constants";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-interface OTPScreenProps {
-  route: {
-    params: {
-      email: string;
-    };
-  };
-  navigation: {
-    goBack: () => void;
-    navigate: (screen: string, params?: object) => void;
-  };
-}
+type OTPScreenProps = NativeStackScreenProps<RootStackParamList, "OTPScreen">;
 
 interface OTPValues {
   otp: string;
@@ -26,10 +27,10 @@ interface OTPValues {
 
 const OTPScreen = ({ route, navigation }: OTPScreenProps) => {
   const { email } = route.params;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
 
-  const inputRefs = useRef<Array<TextInput | null>>([]);
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const handleOTPSubmit = async (values: OTPValues, actions: FormikHelpers<OTPValues>) => {
     const otp = values.otp;
@@ -46,9 +47,7 @@ const OTPScreen = ({ route, navigation }: OTPScreenProps) => {
   };
 
   const validationSchema = Yup.object({
-    otp: Yup.string()
-      .length(4, "OTP must be exactly 4 digits")
-      .required("OTP is required"),
+    otp: Yup.string().length(4, "OTP must be exactly 4 digits").required("OTP is required"),
   });
 
   const handleDigitChange = (
@@ -74,57 +73,55 @@ const OTPScreen = ({ route, navigation }: OTPScreenProps) => {
   };
 
   return (
-    <ScrollView style={{backgroundColor: '#fff'}}>
-    <View style={styles.container}>
-      <View style={{marginTop: 5,right: 10}}>
-      <BackBtn onPress={() => navigation.goBack()}  />
-      </View>
+    <ScrollView style={{ backgroundColor: "#fff" }}>
+      <View style={styles.container}>
+        <View style={{ marginTop: 5, right: 10 }}>
+          <BackBtn onPress={() => navigation.goBack()} />
+        </View>
 
-      <Formik
-        initialValues={{ otp: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleOTPSubmit}
-      >
-        {({ handleSubmit, values, setFieldValue, errors, touched }) => (
-          <View style={styles.centeredContent}>
-            <Image
-              source={require("../../assets/images/fgpotp.png")}
-              style={styles.image}
-            />
+        <Formik
+          initialValues={{ otp: "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleOTPSubmit}
+        >
+          {({ handleSubmit, values, setFieldValue, errors, touched }) => (
+            <View style={styles.centeredContent}>
+              <Image source={require("../../assets/images/fgpotp.png")} style={styles.image} />
 
-            <Text style={styles.informativeText}>
-              Please check your email, <Text style={styles.emailText}>{email}</Text>, for the 4-digit OTP code.
-            </Text>
+              <Text style={styles.informativeText}>
+                Please check your email, <Text style={styles.emailText}>{email}</Text>, for the
+                4-digit OTP code.
+              </Text>
 
-            <View style={styles.otpContainer}>
-              {[...Array(4)].map((_, index) => (
-                <TextInput
-                  key={index}
-                  ref={(ref) => (inputRefs.current[index] = ref)}
-                  style={styles.otpInput}
-                  keyboardType="numeric"
-                  maxLength={1}
-                  value={values.otp[index] || ""}
-                  onChangeText={(text) => handleDigitChange(text, index, values, setFieldValue)}
-                  onKeyPress={({ nativeEvent }) =>
-                    nativeEvent.key === "Backspace" && handleBackspace(nativeEvent.key, index)
-                  }
-                />
-              ))}
+              <View style={styles.otpContainer}>
+                {[...Array(4)].map((_, index) => (
+                  <TextInput
+                    key={index}
+                    ref={(ref) => (inputRefs.current[index] = ref)}
+                    style={styles.otpInput}
+                    keyboardType="numeric"
+                    maxLength={1}
+                    value={values.otp[index] || ""}
+                    onChangeText={(text) => handleDigitChange(text, index, values, setFieldValue)}
+                    onKeyPress={({ nativeEvent }) =>
+                      nativeEvent.key === "Backspace" && handleBackspace(nativeEvent.key, index)
+                    }
+                  />
+                ))}
+              </View>
+
+              {touched.otp && errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
+
+              <Button
+                title="Verify OTP"
+                onPress={handleSubmit}
+                isValid={values.otp.length === 4}
+                loader={loading}
+              />
             </View>
-
-            {touched.otp && errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
-
-            <Button
-              title="Verify OTP"
-              onPress={handleSubmit}
-              isValid={values.otp.length === 4}
-              loader={loading}
-            />
-          </View>
-        )}
-      </Formik>
-    </View>
+          )}
+        </Formik>
+      </View>
     </ScrollView>
   );
 };
@@ -140,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center", // Centers the content vertically
     flex: 1,
-    marginBottom: 70
+    marginBottom: 70,
   },
   image: {
     //bottom: 60,

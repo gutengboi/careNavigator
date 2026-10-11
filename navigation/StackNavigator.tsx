@@ -1,7 +1,14 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BottomTabNavigation from "./BottomTabNavigation";
-import { ForgetPassword, LoginPage, OTPScreen, ResetPassword, Signup, VerifyOTPScreen } from "@/screen/auth";
+import {
+  ForgetPassword,
+  LoginPage,
+  OTPScreen,
+  ResetPassword,
+  Signup,
+  VerifyOTPScreen,
+} from "@/screen/auth";
 import Apptheme from "@/screen/Apptheme";
 import ComingSoon from "@/screen/comingSoon";
 import Chatbot from "@/screen/chatbot";
@@ -23,42 +30,27 @@ import {
   LabTestScreen,
   DoctorScreen,
 } from "@/components/homeScreenComponent";
+import type { RootStackParamList } from "@/types/navigation";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function StackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={LoginPage}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
       <Stack.Screen
         name="BottomNavigation"
         component={BottomTabNavigation}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Signup"
-        component={Signup}
-        options={{ headerShown: false }}
-      />
-       <Stack.Screen
-        name="VerifyOTP"
-        component={VerifyOTPScreen}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
+      <Stack.Screen name="VerifyOTP" component={VerifyOTPScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="ForgetPassword"
         component={ForgetPassword}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="OTPScreen"
-        component={OTPScreen}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="OTPScreen" component={OTPScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
@@ -69,10 +61,7 @@ export default function StackNavigator() {
         component={ComingSoon}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Coming Soon"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Coming Soon" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -80,12 +69,7 @@ export default function StackNavigator() {
         name="Apptheme"
         component={Apptheme}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomHeader
-              title="AppTheme"
-              onBackPress={() => navigation.goBack()}
-            />
-          ),
+          header: () => <CustomHeader title="AppTheme" onBackPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
@@ -93,10 +77,7 @@ export default function StackNavigator() {
         component={Chatbot}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Ask careBot"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Ask careBot" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -105,10 +86,7 @@ export default function StackNavigator() {
         component={DiagnoseMe}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Diagnose Me"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Diagnose Me" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -116,12 +94,7 @@ export default function StackNavigator() {
         name="Allergies"
         component={AllergiesScreen}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomHeader
-              title="Allergies"
-              onBackPress={() => navigation.goBack()}
-            />
-          ),
+          header: () => <CustomHeader title="Allergies" onBackPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
@@ -129,10 +102,7 @@ export default function StackNavigator() {
         component={AllergiesList}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="AllergiesList"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="AllergiesList" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -141,10 +111,7 @@ export default function StackNavigator() {
         component={AppointmentScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="My appointments"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="My appointments" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -153,10 +120,7 @@ export default function StackNavigator() {
         component={DoctorProfileScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Doctor's Profile"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Doctor's Profile" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -166,10 +130,7 @@ export default function StackNavigator() {
         component={MedicalReportScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Medical Report"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Medical Report" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -178,24 +139,14 @@ export default function StackNavigator() {
         name="CancelAppointment"
         component={CancellationReasonScreen}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomHeader
-              title="Reason"
-              onBackPress={() => navigation.goBack()}
-            />
-          ),
+          header: () => <CustomHeader title="Reason" onBackPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
         name="ReviewScreen"
         component={ReviewScreen}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomHeader
-              title="Review"
-              onBackPress={() => navigation.goBack()}
-            />
-          ),
+          header: () => <CustomHeader title="Review" onBackPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
@@ -203,10 +154,7 @@ export default function StackNavigator() {
         component={HealthSummaryScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Health Summary"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Health Summary" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -216,10 +164,7 @@ export default function StackNavigator() {
         component={PastMedicationScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Past Medication"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Past Medication" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -229,10 +174,7 @@ export default function StackNavigator() {
         component={MedicalHistoryScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Medical History"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Medical History" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -241,10 +183,7 @@ export default function StackNavigator() {
         component={HealthServiceScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Health Service"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Health Service" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -254,10 +193,7 @@ export default function StackNavigator() {
         component={HealthDetailsScreen}
         options={({ navigation }) => ({
           header: () => (
-            <CustomHeader
-              title="Health Details"
-              onBackPress={() => navigation.goBack()}
-            />
+            <CustomHeader title="Health Details" onBackPress={() => navigation.goBack()} />
           ),
         })}
       />
@@ -266,24 +202,14 @@ export default function StackNavigator() {
         name="LabTest"
         component={LabTestScreen}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomHeader
-              title="Lab Test"
-              onBackPress={() => navigation.goBack()}
-            />
-          ),
+          header: () => <CustomHeader title="Lab Test" onBackPress={() => navigation.goBack()} />,
         })}
       />
       <Stack.Screen
         name="DoctorScreen"
         component={DoctorScreen}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomHeader
-              title="Doctors"
-              onBackPress={() => navigation.goBack()}
-            />
-          ),
+          header: () => <CustomHeader title="Doctors" onBackPress={() => navigation.goBack()} />,
         })}
       />
 

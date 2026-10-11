@@ -8,19 +8,10 @@ import { COLORS, SIZES } from "@/constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BackBtn, Button } from "@/components"; // Use your custom Button component here
 import { RootState, AppDispatch } from "@/store/store"; // Adjust if needed
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-interface ResetPasswordProps {
-  route: {
-    params: {
-      email: string;
-      otp: string;
-    };
-  };
-  navigation: {
-    goBack: () => void;
-    navigate: (screen: string) => void;
-  };
-}
+type ResetPasswordProps = NativeStackScreenProps<RootStackParamList, "ResetPassword">;
 
 interface ResetPasswordValues {
   newPassword: string;
