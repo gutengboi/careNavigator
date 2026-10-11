@@ -1,12 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { AntDesign, Feather,Ionicons } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/index";
 import { Home, Profile, Create, Explore } from "@/screen/bottomNavScreen";
 
 const Tab = createBottomTabNavigator();
 
-const screenOptions = ({ route  }) => ({
+const screenOptions: React.ComponentProps<typeof Tab.Navigator>["screenOptions"] = ({ route }) => ({
   tabBarShowLabel: true,
   tabBarHideOnKeyboard: true,
   headerShown: false,
@@ -37,7 +37,7 @@ const screenOptions = ({ route  }) => ({
       iconName = focused ? "user" : "user";
     }
 
-    return <AntDesign name={iconName} size={size} color={color} />;
+    return <AntDesign name={iconName as any} size={size} color={color} />;
   },
   tabBarLabelStyle: {
     fontSize: 12,
