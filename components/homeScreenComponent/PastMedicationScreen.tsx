@@ -11,11 +11,19 @@ import {
 import { Ionicons } from "@expo/vector-icons"; // Icons library
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
 
+interface Medication {
+  name: string;
+  dosage: string;
+  duration: string;
+  type: string;
+  description: string;
+}
+
 const PastMedicationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedMedication, setSelectedMedication] = useState(null);
+  const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
 
-  const medications = [
+  const medications: Medication[] = [
     {
       name: "Aspirin",
       dosage: "75 mg",
@@ -39,7 +47,7 @@ const PastMedicationScreen = () => {
     },
   ];
 
-  const openModal = (medication) => {
+  const openModal = (medication: Medication) => {
     setSelectedMedication(medication);
     setModalVisible(true);
   };
@@ -60,19 +68,11 @@ const PastMedicationScreen = () => {
           <View key={index} style={styles.medicationCard}>
             <View style={styles.medicationInfo}>
               <Text style={styles.medicationName}>{medication.name}</Text>
-              <Text style={styles.medicationDosage}>
-                Dosage: {medication.dosage}
-              </Text>
-              <Text style={styles.medicationDuration}>
-                Duration: {medication.duration}
-              </Text>
+              <Text style={styles.medicationDosage}>Dosage: {medication.dosage}</Text>
+              <Text style={styles.medicationDuration}>Duration: {medication.duration}</Text>
             </View>
             <TouchableOpacity onPress={() => openModal(medication)}>
-              <Ionicons
-                name="information-circle-outline"
-                size={24}
-                color={COLORS.primary}
-              />
+              <Ionicons name="information-circle-outline" size={24} color={COLORS.primary} />
             </TouchableOpacity>
           </View>
         ))}
@@ -93,18 +93,10 @@ const PastMedicationScreen = () => {
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>{selectedMedication.name}</Text>
-              <Text style={styles.modalText}>
-                Type: {selectedMedication.type}
-              </Text>
-              <Text style={styles.modalText}>
-                Dosage: {selectedMedication.dosage}
-              </Text>
-              <Text style={styles.modalText}>
-                Duration: {selectedMedication.duration}
-              </Text>
-              <Text style={styles.modalText}>
-                Description: {selectedMedication.description}
-              </Text>
+              <Text style={styles.modalText}>Type: {selectedMedication.type}</Text>
+              <Text style={styles.modalText}>Dosage: {selectedMedication.dosage}</Text>
+              <Text style={styles.modalText}>Duration: {selectedMedication.duration}</Text>
+              <Text style={styles.modalText}>Description: {selectedMedication.description}</Text>
 
               <Pressable style={styles.closeButton} onPress={closeModal}>
                 <Text style={styles.closeButtonText}>Close</Text>
