@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
+import { Platform } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/index";
 import { Home, Profile, Create, Explore } from "@/screen/bottomNavScreen";
@@ -11,7 +12,13 @@ const screenOptions: React.ComponentProps<typeof Tab.Navigator>["screenOptions"]
   tabBarHideOnKeyboard: true,
   headerShown: false,
   tabBarStyle: {
-    position: "absolute",
+    // On react-native-web, an absolutely-positioned tab bar breaks inactive
+    // tab icons from ever painting their glyph (reproducible: the focused
+    // tab's icon always renders, every other tab's never does, regardless
+    // of which @expo/vector-icons font is used). Native doesn't have this
+    // problem and absolute positioning is what makes the bar float above
+    // the screen edge with rounded corners, so only drop it on web.
+    position: Platform.OS === "web" ? undefined : "absolute",
     bottom: 25,
     left: 10,
     right: 10,
