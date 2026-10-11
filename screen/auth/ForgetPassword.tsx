@@ -18,13 +18,14 @@ import { forgotPassword } from "../../store/authSlice"; // Assuming the path to 
 import { BackBtn, Button } from "@/components";
 import { COLORS, SIZES } from "@/constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import type { AppDispatch } from "@/store/store";
 
-const ForgetPassword = ({ navigation }) => {
-  const dispatch = useDispatch();
+const ForgetPassword = ({ navigation }: { navigation: any }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { isLoading, error } = useSelector((state: any) => state.auth);
   const [modalVisible, setModalVisible] = React.useState(false); // State for Modal visibility
 
-  const handleForgotPassword = async (values) => {
+  const handleForgotPassword = async (values: { email: string }) => {
     setModalVisible(true); // Show loading modal
     dispatch(forgotPassword({ email: values.email }))
       .unwrap()
@@ -33,7 +34,7 @@ const ForgetPassword = ({ navigation }) => {
         Alert.alert("OTP Sent", "Please check your email for the OTP.");
         navigation.navigate("OTPScreen", { email: values.email }); // Navigate to OTPScreen, passing email
       })
-      .catch((err) => {
+      .catch((err: string) => {
         setModalVisible(false); // Hide loading modal
         Alert.alert("Error", err);
       });
@@ -47,13 +48,10 @@ const ForgetPassword = ({ navigation }) => {
     <KeyboardAvoidingView>
       <SafeAreaView style={{ marginHorizontal: 20 }}>
         <View style={styles.container}>
-          <View style={{marginTop: 5,right: 20}}>
-          <BackBtn onPress={() => navigation.goBack()} />
-            </View>
-          <Image
-            source={require("../../assets/images/forgetPass.png")}
-            style={styles.cover}
-          />
+          <View style={{ marginTop: 5, right: 20 }}>
+            <BackBtn onPress={() => navigation.goBack()} />
+          </View>
+          <Image source={require("../../assets/images/forgetPass.png")} style={styles.cover} />
           <Formik
             initialValues={{ email: "" }}
             validationSchema={validationSchema}
@@ -72,11 +70,7 @@ const ForgetPassword = ({ navigation }) => {
               <View>
                 <View style={styles.wrapper}>
                   <Text style={styles.label}>Email</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.email ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
+                  <View style={inputWrapper(touched.email ? COLORS.secondary : COLORS.offwhite)}>
                     <MaterialCommunityIcons
                       name="email-outline"
                       size={20}
@@ -124,21 +118,22 @@ const ForgetPassword = ({ navigation }) => {
   );
 };
 
+const inputWrapper = (borderColor: string) => ({
+  borderColor: borderColor,
+  backgroundColor: COLORS.lightWhite,
+  borderWidth: 1,
+  height: 50,
+  borderRadius: 12,
+  flexDirection: "row" as const,
+  paddingHorizontal: 15,
+  alignItems: "center" as const,
+});
+
 const styles = StyleSheet.create({
   container: { padding: 20 },
   wrapper: {
     marginBottom: 20,
   },
-  inputWrapper: (borderColor) => ({
-    borderColor: borderColor,
-    backgroundColor: COLORS.lightWhite,
-    borderWidth: 1,
-    height: 50,
-    borderRadius: 12,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-    alignItems: "center",
-  }),
   label: {
     fontFamily: "regular",
     fontSize: SIZES.xSmall,
