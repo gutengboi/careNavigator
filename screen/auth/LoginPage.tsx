@@ -29,6 +29,7 @@ interface FormValues {
 const LoginPage = ({ navigation }: { navigation: any }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useSelector((state: any) => state.auth);
 
@@ -53,7 +54,7 @@ const LoginPage = ({ navigation }: { navigation: any }) => {
 
   const handleLogin = async (values: FormValues) => {
     setModalVisible(true);
-    dispatch(login(values))
+    dispatch(login({ ...values, rememberMe }))
       .unwrap()
       .then((user: any) => {
         setModalVisible(false);
@@ -156,6 +157,18 @@ const LoginPage = ({ navigation }: { navigation: any }) => {
                   )}
                 </View>
 
+                <TouchableOpacity
+                  style={styles.rememberMeRow}
+                  onPress={() => setRememberMe(!rememberMe)}
+                >
+                  <MaterialCommunityIcons
+                    name={rememberMe ? "checkbox-marked" : "checkbox-blank-outline"}
+                    size={20}
+                    color={COLORS.primary}
+                  />
+                  <Text style={styles.rememberMeText}>Remember Me</Text>
+                </TouchableOpacity>
+
                 {/* Forget Password Text */}
                 <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
                   <Text style={styles.forgetPasswordText}>Forget Password?</Text>
@@ -229,6 +242,17 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5,
     fontSize: SIZES.xSmall,
+  },
+  rememberMeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
+  },
+  rememberMeText: {
+    marginLeft: 8,
+    fontFamily: "regular",
+    fontSize: SIZES.xSmall,
+    color: COLORS.gray,
   },
   registration: {
     marginTop: 20,

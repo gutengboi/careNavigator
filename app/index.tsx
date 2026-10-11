@@ -1,19 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-  Theme,
-} from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme, Theme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import StackNavigator from "../navigation/StackNavigator";
 import DarkMode from "../components/darkmode.context";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
-import { Provider, useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store, { AppDispatch } from "../store/store";
+import { fetchUser, selectIsLoggedIn } from "../store/authSlice";
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -56,7 +52,7 @@ const App = () => {
   }, [scheme, useDeviceSettings]);
 
   if (!fontsLoaded) {
-    return null; 
+    return null;
   }
 
   return (
@@ -69,10 +65,7 @@ const App = () => {
       }}
     >
       <Provider store={store}>
-        <NavigationContainer
-          independent={true}
-          theme={isDarkMode ? CustomDarkTheme : DefaultTheme}
-        >
+        <NavigationContainer independent={true} theme={isDarkMode ? CustomDarkTheme : DefaultTheme}>
           <StatusBar style={isDarkMode ? "light" : "dark"} />
           <AppInitializer />
         </NavigationContainer>
@@ -83,13 +76,19 @@ const App = () => {
 
 const AppInitializer = () => {
   const dispatch: AppDispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const [checkingSession, setCheckingSession] = useState(true);
 
   useEffect(() => {
-    // Uncomment the following line if you want to load auth state at the start
-    // dispatch(loadAuthState());
+    dispatch(fetchUser()).finally(() => setCheckingSession(false));
   }, [dispatch]);
 
-  return <StackNavigator />;
+  // Avoid a flash of the Login screen while we check for a remembered session.
+  if (checkingSession) {
+    return null;
+  }
+
+  return <StackNavigator initialRouteName={isLoggedIn ? "BottomNavigation" : "Login"} />;
 };
 
 export default App;

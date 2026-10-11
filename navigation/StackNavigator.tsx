@@ -34,9 +34,13 @@ import type { RootStackParamList } from "@/types/navigation";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function StackNavigator() {
+interface StackNavigatorProps {
+  initialRouteName?: keyof RootStackParamList;
+}
+
+export default function StackNavigator({ initialRouteName }: StackNavigatorProps) {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName={initialRouteName}>
       <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
       <Stack.Screen
         name="BottomNavigation"

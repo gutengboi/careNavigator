@@ -28,16 +28,22 @@ const initialState: AuthState = {
 
 export const login = createAsyncThunk<
   User,
-  { email: string; password: string },
+  { email: string; password: string; rememberMe: boolean },
   { rejectValue: string }
->("auth/login", async ({ email, password }, { rejectWithValue }) => {
+>("auth/login", async ({ email, password, rememberMe }, { rejectWithValue }) => {
   try {
     const user = await requestWithRetry({
       method: "post",
       url: "/login",
       data: { email, password },
     });
-    await AsyncStorage.setItem("user", JSON.stringify(user));
+    if (rememberMe) {
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+    } else {
+      // Clear out any previously remembered session so this login doesn't
+      // survive an app restart just because an earlier one opted in.
+      await AsyncStorage.removeItem("user");
+    }
     return user;
   } catch (error) {
     console.log(error);
