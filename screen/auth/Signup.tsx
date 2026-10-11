@@ -19,16 +19,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../constants/index";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../../store/authSlice";
+import type { AppDispatch } from "../../store/store";
 
-interface SignupProps {
-  navigation: {
-    goBack: () => void;
-    navigate: (screen: string) => void;
-  };
-}
-const Signup = ({ navigation }: SignupProps) => {
+const Signup = ({ navigation }: { navigation: any }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: any) => state.auth);
 
   const invalidForm = () => {
@@ -46,7 +41,7 @@ const Signup = ({ navigation }: SignupProps) => {
           onPress: () => {},
         },
       ],
-      { defaultIndex: 1, cancelable: false }
+      { cancelable: false }
     );
   };
 
@@ -57,7 +52,7 @@ const Signup = ({ navigation }: SignupProps) => {
         // Navigate to VerifyOTP screen and pass the email as a parameter
         navigation.replace("VerifyOTP", { email: values.email });
       })
-      .catch((errorMessage) => {
+      .catch((errorMessage: string) => {
         Alert.alert("Signup Error", errorMessage);
       });
   };
@@ -67,12 +62,8 @@ const Signup = ({ navigation }: SignupProps) => {
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password must be 20 characters or less")
       .required("Required"),
-    email: Yup.string()
-      .email("Provide a valid email address")
-      .required("Required"),
-    username: Yup.string()
-      .min(3, "Provide a valid username")
-      .required("Required"),
+    email: Yup.string().email("Provide a valid email address").required("Required"),
+    username: Yup.string().min(3, "Provide a valid username").required("Required"),
   });
 
   return (
@@ -80,10 +71,7 @@ const Signup = ({ navigation }: SignupProps) => {
       <SafeAreaView style={{ marginHorizontal: 20 }}>
         <View>
           <BackBtn onPress={() => navigation.goBack()} />
-          <Image
-            source={require("../../assets/images/bk.png")}
-            style={styles.cover}
-          />
+          <Image source={require("../../assets/images/bk.png")} style={styles.cover} />
           <Text style={styles.title}>Sign Up to CareNavigator</Text>
           <Formik
             initialValues={{
@@ -107,11 +95,7 @@ const Signup = ({ navigation }: SignupProps) => {
               <View>
                 <View style={styles.wrapper}>
                   <Text style={styles.label}>Username</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.username ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
+                  <View style={inputWrapper(touched.username ? COLORS.secondary : COLORS.offwhite)}>
                     <MaterialCommunityIcons
                       name="face-man-profile"
                       size={20}
@@ -135,11 +119,7 @@ const Signup = ({ navigation }: SignupProps) => {
                 </View>
                 <View style={styles.wrapper}>
                   <Text style={styles.label}>Email</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.email ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
+                  <View style={inputWrapper(touched.email ? COLORS.secondary : COLORS.offwhite)}>
                     <MaterialCommunityIcons
                       name="email-outline"
                       size={20}
@@ -164,11 +144,7 @@ const Signup = ({ navigation }: SignupProps) => {
 
                 <View style={styles.wrapper}>
                   <Text style={styles.label}>Password</Text>
-                  <View
-                    style={styles.inputWrapper(
-                      touched.password ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
+                  <View style={inputWrapper(touched.password ? COLORS.secondary : COLORS.offwhite)}>
                     <MaterialCommunityIcons
                       name="lock-outline"
                       size={20}
@@ -184,13 +160,9 @@ const Signup = ({ navigation }: SignupProps) => {
                       secureTextEntry={!isPasswordVisible}
                       style={{ flex: 1 }}
                     />
-                    <TouchableOpacity
-                      onPress={() => setPasswordVisible(!isPasswordVisible)}
-                    >
+                    <TouchableOpacity onPress={() => setPasswordVisible(!isPasswordVisible)}>
                       <MaterialCommunityIcons
-                        name={
-                          isPasswordVisible ? "eye-outline" : "eye-off-outline"
-                        }
+                        name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
                         size={20}
                         color={COLORS.gray}
                       />
@@ -221,6 +193,17 @@ const Signup = ({ navigation }: SignupProps) => {
   );
 };
 
+const inputWrapper = (borderColor: string) => ({
+  borderColor: borderColor,
+  backgroundColor: COLORS.lightWhite,
+  borderWidth: 1,
+  height: 50,
+  borderRadius: 12,
+  flexDirection: "row" as const,
+  paddingHorizontal: 15,
+  alignItems: "center" as const,
+});
+
 const styles = StyleSheet.create({
   cover: {
     height: SIZES.height / 3,
@@ -245,16 +228,6 @@ const styles = StyleSheet.create({
     marginEnd: 5,
     textAlign: "left",
   },
-  inputWrapper: (borderColor) => ({
-    borderColor: borderColor,
-    backgroundColor: COLORS.lightWhite,
-    borderWidth: 1,
-    height: 50,
-    borderRadius: 12,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-    alignItems: "center",
-  }),
   iconStyle: {
     marginRight: 10,
   },
