@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, {
+  useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withSequence,
@@ -17,6 +18,9 @@ const Page = () => {
   const router = useRouter();
 
   const offset = useSharedValue(0);
+  const style = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
 
   const OFFSET = 20;
   const TIME = 80;
@@ -61,7 +65,7 @@ const Page = () => {
   return (
     <SafeAreaView>
       <Text style={styles.greeting}>Welcome back, Olayinka</Text>
-      <Animated.View style={[styles.codeView]}>
+      <Animated.View style={[styles.codeView, style]}>
         {codeLength.map((_, index) => (
           <View
             key={index}
