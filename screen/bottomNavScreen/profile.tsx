@@ -16,6 +16,7 @@ import { logout } from "../../store/authSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/authSlice";
 import DarkMode from "@/components/darkmode.context";
+import type { AppDispatch } from "@/store/store";
 
 interface MenuItemProps {
   icon: {
@@ -44,7 +45,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
   return (
     <TouchableOpacity style={styles.menuItem} onPress={onPress}>
       <View style={styles.iconContainer}>
-        <IconComponent name={icon.name} size={24} color={iconColor} />
+        {/* IconComponent is one of several icon-set components chosen at runtime,
+            each with a different name union, so icon.name can't be narrowed statically */}
+        <IconComponent name={icon.name as any} size={24} color={iconColor} />
       </View>
       <View style={styles.menuItemText}>
         <Text style={[styles.menuItemTitle, { color: titleColor }]}>
@@ -76,7 +79,7 @@ interface ProfileProps {
 }
 
 const Profile = ({ navigation }: ProfileProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [modalVisible, setModalVisible] = useState(false);
   const user = useSelector(selectUser);
   const { isDarkMode } = useContext(DarkMode);

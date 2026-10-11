@@ -176,7 +176,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? null;
       })
       .addCase(signup.pending, (state) => {
         state.loading = true;
@@ -189,7 +189,7 @@ const authSlice = createSlice({
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? null;
       })
       .addCase(fetchUser.pending, (state) => {
         state.loading = true;
@@ -200,9 +200,9 @@ const authSlice = createSlice({
         state.isLoggedIn = !!action.payload;
         state.user = action.payload;
       })
-      .addCase(fetchUser.rejected, (state, action) => {
+      .addCase(fetchUser.rejected, (state) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = "Failed to fetch user";
       })
       .addCase(resetPassword.pending, (state) => {
         state.loading = true;
@@ -213,7 +213,7 @@ const authSlice = createSlice({
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? null;
       })
       .addCase(forgotPassword.pending, (state) => {
         state.loading = true;
@@ -224,7 +224,7 @@ const authSlice = createSlice({
       })
       .addCase(forgotPassword.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? null;
       })
       .addCase(verifyOTP.pending, (state) => {
         state.loading = true;
@@ -235,7 +235,7 @@ const authSlice = createSlice({
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? null;
       })
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;
@@ -250,7 +250,7 @@ const authSlice = createSlice({
       })
       .addCase(verifyRegistrationOTP.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload ?? null;
       });
   },
 });

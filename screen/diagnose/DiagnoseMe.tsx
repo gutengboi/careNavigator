@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { DiagnosisResult } from "@/components/DiagnosisResult";
 import { SymptomQuestion } from "@/components/SymptomQuestion";
 import { shuffleQuestions } from "@/constants/shuffleQuestions";
-import { RootState } from "@/store";
+import { RootState } from "@/store/store";
 import {
   answerQuestion,
   diagnose,
