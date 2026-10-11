@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // For icons
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
 
-const HealthSummaryScreen = ({ navigation }) => {
+const HealthSummaryScreen = ({ navigation }: { navigation: any }) => {
   return (
     <ScrollView style={styles.container}>
       {/* User Info */}
@@ -53,9 +47,7 @@ const HealthSummaryScreen = ({ navigation }) => {
         </View>
         <View style={styles.appointmentCard}>
           <Text style={styles.appointmentDoctor}>Dr. Olivia Turner</Text>
-          <Text style={styles.appointmentDetails}>
-            Dermatologist - 5 June 2024
-          </Text>
+          <Text style={styles.appointmentDetails}>Dermatologist - 5 June 2024</Text>
         </View>
       </View>
 

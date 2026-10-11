@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "@/constants"; 
+import { COLORS } from "@/constants";
 import { useNavigation } from "@react-navigation/native"; // Import navigation hook
 
 const doctorsData = [
@@ -60,18 +60,15 @@ const medicalFields = [
 
 const DoctorScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedField, setSelectedField] = useState(null);
+  const [selectedField, setSelectedField] = useState<string | null>(null);
   const navigation = useNavigation();
-
 
   const filterDoctors = () => {
     return doctorsData.filter((doctor) => {
       const matchesSearchQuery =
         doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         doctor.field.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesField = selectedField
-        ? doctor.field === selectedField
-        : true;
+      const matchesField = selectedField ? doctor.field === selectedField : true;
       return matchesSearchQuery && matchesField;
     });
   };
@@ -90,21 +87,12 @@ const DoctorScreen = () => {
       </View>
 
       {/* Medical Fields */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.fieldScroll}
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.fieldScroll}>
         {medicalFields.map((field) => (
           <TouchableOpacity
             key={field}
-            style={[
-              styles.fieldButton,
-              selectedField === field && styles.selectedFieldButton,
-            ]}
-            onPress={() =>
-              setSelectedField(field === selectedField ? null : field)
-            }
+            style={[styles.fieldButton, selectedField === field && styles.selectedFieldButton]}
+            onPress={() => setSelectedField(field === selectedField ? null : field)}
           >
             <Text
               style={[
@@ -117,7 +105,7 @@ const DoctorScreen = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      
+
       <FlatList
         data={filterDoctors()}
         keyExtractor={(item) => item.id.toString()}

@@ -1,39 +1,33 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  StyleSheet,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // For back arrow
-import { FontAwesome } from '@expo/vector-icons'; // For star icons
-import { COLORS } from '@/constants'; // Assuming you have a color scheme defined
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // For back arrow
+import { FontAwesome } from "@expo/vector-icons"; // For star icons
+import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
 
-const ReviewScreen = ({ navigation }) => {
+const ReviewScreen = ({ navigation }: { navigation: any }) => {
   const [rating, setRating] = useState(0); // State for star rating
-  const [comment, setComment] = useState(''); // State for user comment
+  const [comment, setComment] = useState(""); // State for user comment
 
-  const handleStarPress = (value) => {
+  const handleStarPress = (value: number) => {
     setRating(value);
   };
 
   const handleSubmitReview = () => {
     // Handle the review submission logic here
-    console.log('Rating:', rating);
-    console.log('Comment:', comment);
+    console.log("Rating:", rating);
+    console.log("Comment:", comment);
   };
 
   return (
     <View style={styles.container}>
-    
       <Text style={styles.description}>
         Please leave a review for your appointment with Dr. Olivia Turner.
       </Text>
 
       <Image
-        source={{ uri: 'https://health.gov/sites/default/files/styles/600_wide/public/2022-06/cadqt.jpg?itok=zn27s5mX' }} 
+        source={{
+          uri: "https://health.gov/sites/default/files/styles/600_wide/public/2022-06/cadqt.jpg?itok=zn27s5mX",
+        }}
         style={styles.doctorImage}
       />
 
@@ -44,7 +38,7 @@ const ReviewScreen = ({ navigation }) => {
         {[1, 2, 3, 4, 5].map((star) => (
           <TouchableOpacity key={star} onPress={() => handleStarPress(star)}>
             <FontAwesome
-              name={star <= rating ? 'star' : 'star-o'}
+              name={star <= rating ? "star" : "star-o"}
               size={32}
               color={COLORS.primary}
               style={styles.starIcon}
@@ -72,46 +66,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
   },
   backButton: {
     marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.primary,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   description: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   doctorImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 20,
   },
   doctorName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.primary,
-    textAlign: 'center',
+    textAlign: "center",
   },
   doctorSpecialty: {
     fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
     marginBottom: 20,
   },
   ratingContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 20,
   },
   starIcon: {
@@ -119,23 +113,23 @@ const styles = StyleSheet.create({
   },
   commentInput: {
     borderWidth: 1,
-    borderColor: '#CCC',
+    borderColor: "#CCC",
     borderRadius: 8,
     padding: 10,
     height: 100,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
     marginBottom: 20,
   },
   submitButton: {
     backgroundColor: COLORS.primary,
     paddingVertical: 15,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   submitButtonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

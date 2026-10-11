@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { CalendarList } from "react-native-calendars";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, RouteProp } from "@react-navigation/native";
+import type { RootStackParamList } from "@/types/navigation";
 
 const DoctorProfileScreen = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  
-  const route = useRoute();
-  const { name, field, image } = route.params; 
+
+  const route = useRoute<RouteProp<RootStackParamList, "DoctorProfile">>();
+  const { name, field, image } = route.params;
 
   const selectTime = (time: string) => {
     setSelectedTime(time);
@@ -80,7 +81,6 @@ const DoctorProfileScreen = () => {
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

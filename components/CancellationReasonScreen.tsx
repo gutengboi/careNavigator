@@ -1,39 +1,33 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // For back arrow
-import { COLORS } from '@/constants'; // Assuming you have a color scheme defined
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // For back arrow
+import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
 
 interface Props {
   title: string;
   onBackPress?: () => void;
 }
 
-const CancellationReasonScreen = ({ navigation }) => {
-  const [selectedReason, setSelectedReason] = useState('');
-  const [customReason, setCustomReason] = useState('');
+const CancellationReasonScreen = ({ navigation }: { navigation: any }) => {
+  const [selectedReason, setSelectedReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
 
-  const reasons = ['Rescheduling', 'Weather Conditions', 'Unexpected Work', 'Others'];
+  const reasons = ["Rescheduling", "Weather Conditions", "Unexpected Work", "Others"];
 
-  const handleReasonSelect = (reason) => {
+  const handleReasonSelect = (reason: string) => {
     setSelectedReason(reason);
-    if (reason !== 'Others') {
-      setCustomReason(''); // Clear custom reason if other reason is selected
+    if (reason !== "Others") {
+      setCustomReason(""); // Clear custom reason if other reason is selected
     }
   };
 
   const handleCancel = () => {
     // Handle the appointment cancellation logic here
-    console.log('Selected Reason:', selectedReason);
-    console.log('Custom Reason:', customReason);
+    console.log("Selected Reason:", selectedReason);
+    console.log("Custom Reason:", customReason);
   };
 
-  const isSubmitDisabled = selectedReason === 'Others' && !customReason;
+  const isSubmitDisabled = selectedReason === "Others" && !customReason;
 
   return (
     <View style={styles.container}>
@@ -54,7 +48,7 @@ const CancellationReasonScreen = ({ navigation }) => {
         </TouchableOpacity>
       ))}
 
-      {selectedReason === 'Others' && (
+      {selectedReason === "Others" && (
         <TextInput
           style={styles.customReasonInput}
           placeholder="Enter your reason here..."
@@ -64,8 +58,8 @@ const CancellationReasonScreen = ({ navigation }) => {
         />
       )}
 
-      <TouchableOpacity 
-        style={[styles.cancelButton, isSubmitDisabled && styles.disabledButton]} 
+      <TouchableOpacity
+        style={[styles.cancelButton, isSubmitDisabled && styles.disabledButton]}
         onPress={handleCancel}
         disabled={isSubmitDisabled}
       >
@@ -79,16 +73,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
   },
   description: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 20,
   },
   radioContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
   radioButtonOuter: {
@@ -97,8 +91,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 2,
     borderColor: COLORS.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
   radioButtonInner: {
@@ -112,27 +106,27 @@ const styles = StyleSheet.create({
   },
   customReasonInput: {
     borderWidth: 1,
-    borderColor:  COLORS.primary,
+    borderColor: COLORS.primary,
     borderRadius: 8,
     padding: 10,
     height: 100,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
     marginBottom: 20,
   },
   cancelButton: {
     backgroundColor: COLORS.primary,
     paddingVertical: 15,
     borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20
+    alignItems: "center",
+    marginTop: 20,
   },
   disabledButton: {
-    backgroundColor: '#CCC', // Grey out the button when disabled
+    backgroundColor: "#CCC", // Grey out the button when disabled
   },
   cancelButtonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
