@@ -11,16 +11,20 @@ import {
 import { Ionicons } from "@expo/vector-icons"; // Icons
 import { COLORS } from "@/constants"; // Assuming you have a color scheme
 
+interface HistoryItem {
+  condition: string;
+  details: string;
+}
+
 const MedicalHistoryScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState<HistoryItem | null>(null);
 
   // Sample data for medical history
-  const medicalHistory = [
+  const medicalHistory: HistoryItem[] = [
     {
       condition: "Hypertension",
-      details:
-        "Diagnosed in 2021. Currently on medication to control blood pressure.",
+      details: "Diagnosed in 2021. Currently on medication to control blood pressure.",
     },
     {
       condition: "Appendectomy",
@@ -36,7 +40,7 @@ const MedicalHistoryScreen = () => {
     },
   ];
 
-  const openModal = (historyItem) => {
+  const openModal = (historyItem: HistoryItem) => {
     setSelectedHistoryItem(historyItem);
     setModalVisible(true);
   };
@@ -56,16 +60,10 @@ const MedicalHistoryScreen = () => {
         {medicalHistory.map((historyItem, index) => (
           <View key={index} style={styles.historyCard}>
             <View style={styles.historyInfo}>
-              <Text style={styles.historyCondition}>
-                {historyItem.condition}
-              </Text>
+              <Text style={styles.historyCondition}>{historyItem.condition}</Text>
             </View>
             <TouchableOpacity onPress={() => openModal(historyItem)}>
-              <Ionicons
-                name="information-circle-outline"
-                size={24}
-                color={COLORS.primary}
-              />
+              <Ionicons name="information-circle-outline" size={24} color={COLORS.primary} />
             </TouchableOpacity>
           </View>
         ))}
@@ -81,12 +79,8 @@ const MedicalHistoryScreen = () => {
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>
-                {selectedHistoryItem.condition}
-              </Text>
-              <Text style={styles.modalText}>
-                {selectedHistoryItem.details}
-              </Text>
+              <Text style={styles.modalTitle}>{selectedHistoryItem.condition}</Text>
+              <Text style={styles.modalText}>{selectedHistoryItem.details}</Text>
 
               <Pressable style={styles.closeButton} onPress={closeModal}>
                 <Text style={styles.closeButtonText}>Close</Text>

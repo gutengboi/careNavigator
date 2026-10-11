@@ -11,12 +11,18 @@ import {
 import { Ionicons } from "@expo/vector-icons"; // Icons
 import { COLORS } from "@/constants"; // Assuming you have a color scheme
 
+interface HealthService {
+  service: string;
+  description: string;
+  details: string;
+}
+
 const HealthServiceScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
+  const [selectedService, setSelectedService] = useState<HealthService | null>(null);
 
   // Sample data for health services
-  const healthServices = [
+  const healthServices: HealthService[] = [
     {
       service: "General Consultation",
       description:
@@ -40,21 +46,19 @@ const HealthServiceScreen = () => {
     },
     {
       service: "Dental Care",
-      description:
-        "Dental services, including routine cleanings, fillings, and oral exams.",
+      description: "Dental services, including routine cleanings, fillings, and oral exams.",
       details:
         "Our dentists offer a range of services, from regular cleanings and fluoride treatments to fillings, crowns, and other restorative procedures. Duration varies depending on the service.",
     },
     {
       service: "Mental Health Services",
-      description:
-        "Counseling and therapy sessions to address mental health concerns.",
+      description: "Counseling and therapy sessions to address mental health concerns.",
       details:
         "Our mental health services include individual counseling sessions, therapy for anxiety and depression, and group therapy options. Duration: 45 minutes per session.",
     },
   ];
 
-  const openModal = (service) => {
+  const openModal = (service: HealthService) => {
     setSelectedService(service);
     setModalVisible(true);
   };
@@ -77,16 +81,10 @@ const HealthServiceScreen = () => {
           <View key={index} style={styles.serviceCard}>
             <View style={styles.serviceInfo}>
               <Text style={styles.serviceTitle}>{serviceItem.service}</Text>
-              <Text style={styles.serviceDescription}>
-                {serviceItem.description}
-              </Text>
+              <Text style={styles.serviceDescription}>{serviceItem.description}</Text>
             </View>
             <TouchableOpacity onPress={() => openModal(serviceItem)}>
-              <Ionicons
-                name="information-circle-outline"
-                size={24}
-                color={COLORS.primary}
-              />
+              <Ionicons name="information-circle-outline" size={24} color={COLORS.primary} />
             </TouchableOpacity>
           </View>
         ))}
