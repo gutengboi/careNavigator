@@ -30,7 +30,7 @@ const LoginPage = ({ navigation }: { navigation: any }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, error, user } = useSelector((state: any) => state.auth);
+  const { isLoading } = useSelector((state: any) => state.auth);
 
   const invalidForm = () => {
     Alert.alert(

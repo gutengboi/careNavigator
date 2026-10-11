@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // For back arrow
 import { FontAwesome } from "@expo/vector-icons"; // For star icons
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
 

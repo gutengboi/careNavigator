@@ -1,14 +1,5 @@
 import React, { useRef } from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  Alert,
-  StyleSheet,
-  Image,
-  KeyboardAvoidingView,
-  ScrollView,
-} from "react-native";
+import { View, TextInput, Text, Alert, StyleSheet, Image, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";

@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { DiagnosisResult } from "@/components/DiagnosisResult";
 import { SymptomQuestion } from "@/components/SymptomQuestion";
 import { shuffleQuestions } from "@/constants/shuffleQuestions";
 import { RootState } from "@/store/store";
-import {
-  answerQuestion,
-  diagnose,
-  resetDiagnosis,
-} from "@/store/diagnosisSlice";
+import { answerQuestion, diagnose, resetDiagnosis } from "@/store/diagnosisSlice";
 
 const DiagnoseMe = () => {
   const dispatch = useDispatch();
-  const { currentQuestion, diagnosis } = useSelector(
-    (state: RootState) => state.diagnosis
-  );
+  const { currentQuestion, diagnosis } = useSelector((state: RootState) => state.diagnosis);
   const [questionCount, setQuestionCount] = useState(0);
   const symptomsList = shuffleQuestions().slice(0, 7); // Limit questions to 6
 
@@ -33,9 +27,7 @@ const DiagnoseMe = () => {
       {!diagnosis ? (
         <SymptomQuestion
           question={`Do you suffer from ${symptomsList[currentQuestion]}?`}
-          onAnswer={(answer) =>
-            handleAnswer(symptomsList[currentQuestion], answer)
-          }
+          onAnswer={(answer) => handleAnswer(symptomsList[currentQuestion], answer)}
         />
       ) : (
         <DiagnosisResult

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import React from "react";
 
 interface Props {
@@ -9,10 +9,7 @@ const ColorList: React.FC<Props> = ({ color }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {[1, 0.8, 0.5].map((opacity) => (
-        <View
-          key={opacity}
-          style={[styles.color, { backgroundColor: color, opacity }]}
-        />
+        <View key={opacity} style={[styles.color, { backgroundColor: color, opacity }]} />
       ))}
     </ScrollView>
   );

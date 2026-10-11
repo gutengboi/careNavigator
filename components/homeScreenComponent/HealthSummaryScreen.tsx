@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // For icons
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
 
 const HealthSummaryScreen = ({ navigation }: { navigation: any }) => {

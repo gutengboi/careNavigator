@@ -24,7 +24,7 @@ import type { AppDispatch } from "../../store/store";
 const Signup = ({ navigation }: { navigation: any }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: any) => state.auth);
+  const { loading } = useSelector((state: any) => state.auth);
 
   const invalidForm = () => {
     Alert.alert(

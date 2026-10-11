@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Modal, Pressable } from 'react-native';
-import { Card, Button } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '@/constants/Colors';
-import { COLORS } from '@/constants';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+} from "react-native";
+import { Card } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "@/constants";
 
 type MedicalReport = {
   id: string;
@@ -16,25 +24,25 @@ type MedicalReport = {
 
 const initialReports: MedicalReport[] = [
   {
-    id: '1',
-    date: '2023-03-27',
-    hospitalName: 'Healthy Family Centre',
-    reason: 'Allergy Checkup',
-    doctor: 'Dr. Jane Doe',
-    prescription: 'Antihistamines',
+    id: "1",
+    date: "2023-03-27",
+    hospitalName: "Healthy Family Centre",
+    reason: "Allergy Checkup",
+    doctor: "Dr. Jane Doe",
+    prescription: "Antihistamines",
   },
   {
-    id: '2',
-    date: '2023-04-10',
-    hospitalName: 'Healthy Family Centre',
-    reason: 'Diabetes Management',
-    doctor: 'Dr. John Smith',
-    prescription: 'Metformin',
+    id: "2",
+    date: "2023-04-10",
+    hospitalName: "Healthy Family Centre",
+    reason: "Diabetes Management",
+    doctor: "Dr. John Smith",
+    prescription: "Metformin",
   },
 ];
 
 const MedicalReportScreen = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [reports, setReports] = useState<MedicalReport[]>(initialReports);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [reportToDelete, setReportToDelete] = useState<MedicalReport | null>(null);
@@ -42,16 +50,16 @@ const MedicalReportScreen = () => {
   // Function to format date in the required format: Monday, 27 March 2023
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-      weekday: 'long',
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
+    return date.toLocaleDateString("en-GB", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
     });
   };
 
   const handleDelete = (report: MedicalReport) => {
-    setReports(reports.filter(r => r.id !== report.id));
+    setReports(reports.filter((r) => r.id !== report.id));
     setDeleteModalVisible(false);
   };
 
@@ -60,7 +68,7 @@ const MedicalReportScreen = () => {
     setDeleteModalVisible(true);
   };
 
-  const filteredReports = reports.filter(report =>
+  const filteredReports = reports.filter((report) =>
     report.hospitalName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -81,8 +89,8 @@ const MedicalReportScreen = () => {
         <Text style={styles.detailText}>{item.reason}</Text>
 
         <View style={styles.headerRow}>
-        <Text style={styles.detailTitle}>Doctor Seen</Text>
-        <Text style={styles.detailText}>{item.doctor}</Text>
+          <Text style={styles.detailTitle}>Doctor Seen</Text>
+          <Text style={styles.detailText}>{item.doctor}</Text>
         </View>
 
         <Text style={styles.detailTitle}>Drugs/Treatment Prescribed</Text>
@@ -125,7 +133,7 @@ const MedicalReportScreen = () => {
               {reportToDelete?.hospitalName} dated {reportToDelete && formatDate(reportToDelete.date)}? */}
             </Text>
             <View style={styles.modalButtons}>
-            <Pressable
+              <Pressable
                 style={[styles.button, styles.buttonCancel]}
                 onPress={() => setDeleteModalVisible(false)}
               >
@@ -153,15 +161,15 @@ const styles = StyleSheet.create({
     //backgroundColor: COLORS.primary,
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff', 
-    borderRadius: 20,       
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 20,
     paddingHorizontal: 10,
-    paddingVertical: 5,      
+    paddingVertical: 5,
     marginBottom: 10,
-    borderWidth: 1,          
-    borderColor: '#ccc',   
+    borderWidth: 1,
+    borderColor: "#ccc",
   },
   searchInput: {
     flex: 1,
@@ -174,58 +182,58 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     elevation: 3,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   dateText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   deleteText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'red',
+    fontWeight: "bold",
+    color: "red",
   },
   hospitalText: {
     fontSize: 14,
-    color: 'gray',
+    color: "gray",
     marginTop: 5,
   },
   detailTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
   },
   detailText: {
     fontSize: 14,
-    color: 'gray',
+    color: "gray",
     marginBottom: 5,
   },
   noReportText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 20,
     fontSize: 16,
   },
   modalBackground: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: '80%',
-    backgroundColor: 'white',
+    width: "80%",
+    backgroundColor: "white",
     padding: 20,
     borderRadius: 8,
     elevation: 5,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   modalText: {
@@ -233,8 +241,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
   modalButtons: {
@@ -262,6 +270,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
 
 export default MedicalReportScreen;

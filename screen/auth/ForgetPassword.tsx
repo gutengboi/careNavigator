@@ -22,7 +22,7 @@ import type { AppDispatch } from "@/store/store";
 
 const ForgetPassword = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, error } = useSelector((state: any) => state.auth);
+  const { isLoading } = useSelector((state: any) => state.auth);
   const [modalVisible, setModalVisible] = React.useState(false); // State for Modal visibility
 
   const handleForgotPassword = async (values: { email: string }) => {

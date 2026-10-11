@@ -1,13 +1,6 @@
 import { COLORS } from "@/constants";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 interface Allergy {
@@ -29,14 +22,7 @@ const allergies: Allergy[] = [
   },
   {
     category: "Environmental Allergies",
-    items: [
-      "Pollen",
-      "Dust mites",
-      "Pet dander",
-      "Mold spores",
-      "Insect stings",
-      "Latex",
-    ],
+    items: ["Pollen", "Dust mites", "Pet dander", "Mold spores", "Insect stings", "Latex"],
   },
   {
     category: "Medication Allergies",
@@ -71,9 +57,7 @@ const AllergiesScreen = () => {
 
   const toggleAllergySelection = (allergy: string) => {
     if (selectedAllergies.includes(allergy)) {
-      setSelectedAllergies(
-        selectedAllergies.filter((item) => item !== allergy)
-      );
+      setSelectedAllergies(selectedAllergies.filter((item) => item !== allergy));
     } else {
       setSelectedAllergies([...selectedAllergies, allergy]);
     }
@@ -87,10 +71,7 @@ const AllergiesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.scrollView}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         {allergies.map((allergyGroup, index) => (
           <View key={index} style={styles.allergyGroup}>
             <Text style={styles.title}>{allergyGroup.category}</Text>
@@ -100,16 +81,14 @@ const AllergiesScreen = () => {
                   key={idx}
                   style={[
                     styles.allergyButton,
-                    selectedAllergies.includes(item) &&
-                      styles.selectedAllergyButton,
+                    selectedAllergies.includes(item) && styles.selectedAllergyButton,
                   ]}
                   onPress={() => toggleAllergySelection(item)}
                 >
                   <Text
                     style={[
                       styles.allergyButtonText,
-                      selectedAllergies.includes(item) &&
-                        styles.selectedAllergyButtonText,
+                      selectedAllergies.includes(item) && styles.selectedAllergyButtonText,
                     ]}
                   >
                     {item}
@@ -123,9 +102,7 @@ const AllergiesScreen = () => {
       <TouchableOpacity
         style={[
           styles.nextButton,
-          selectedAllergies.length >= 5
-            ? styles.activeNextButton
-            : styles.inactiveNextButton,
+          selectedAllergies.length >= 5 ? styles.activeNextButton : styles.inactiveNextButton,
         ]}
         onPress={handleNext}
         disabled={selectedAllergies.length < 5}

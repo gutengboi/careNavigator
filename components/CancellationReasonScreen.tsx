@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // For back arrow
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
-
-interface Props {
-  title: string;
-  onBackPress?: () => void;
-}
 
 const CancellationReasonScreen = ({ navigation }: { navigation: any }) => {
   const [selectedReason, setSelectedReason] = useState("");

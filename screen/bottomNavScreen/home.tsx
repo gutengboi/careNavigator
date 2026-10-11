@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS } from "@/constants";
 import { StatusBar } from "expo-status-bar";
@@ -42,23 +34,13 @@ const Home = () => {
   }, []);
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: isDarkMode ? "#121212" : "#F5F5F5" },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: isDarkMode ? "#121212" : "#F5F5F5" }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <StatusBar style={isDarkMode ? "light" : "dark"} />
         <View style={styles.appBar}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View style={styles.imageContainer}>
-              <Image
-                source={require("../../assets/images/person.png")}
-                style={styles.profile}
-              />
+              <Image source={require("../../assets/images/person.png")} style={styles.profile} />
             </View>
             <View style={{ paddingHorizontal: 10 }}>
               <Text
@@ -267,10 +249,7 @@ const Home = () => {
               />
               <Text style={styles.title}>Medical History</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.box}
-              onPress={() => navigation.navigate("DiagnoseMe")}
-            >
+            <TouchableOpacity style={styles.box} onPress={() => navigation.navigate("DiagnoseMe")}>
               <Image
                 source={require("../../assets/images/diagnose.png")}
                 style={{ height: 50, width: 50 }}

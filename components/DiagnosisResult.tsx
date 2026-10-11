@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { FontAwesome, Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Prevention from "./Prevention";
 import diseases from "@/utils/diseases";
 import Treatment from "./Treatment";
@@ -12,10 +12,7 @@ interface DiagnosisResultProps {
   onReset: () => void;
 }
 
-export const DiagnosisResult = ({
-  diagnosis,
-  onReset,
-}: DiagnosisResultProps) => {
+export const DiagnosisResult = ({ diagnosis, onReset }: DiagnosisResultProps) => {
   const [modalVisible, setModalVisible] = useState<{
     cause: boolean;
     prevention: boolean;
@@ -55,10 +52,7 @@ export const DiagnosisResult = ({
 
       {/* Icons for Cause, Prevention, Treatment */}
       <View style={styles.iconContainer}>
-        <TouchableOpacity
-          onPress={() => handleModal("cause", true)}
-          style={styles.iconWrapper}
-        >
+        <TouchableOpacity onPress={() => handleModal("cause", true)} style={styles.iconWrapper}>
           <AntDesign name="exclamationcircle" size={24} color={COLORS.red} />
           <Text style={styles.iconLabel}>Cause</Text>
         </TouchableOpacity>
@@ -69,10 +63,7 @@ export const DiagnosisResult = ({
           <Ionicons name="shield-half" size={24} color="green" />
           <Text style={styles.iconLabel}>Prevention</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleModal("treatment", true)}
-          style={styles.iconWrapper}
-        >
+        <TouchableOpacity onPress={() => handleModal("treatment", true)} style={styles.iconWrapper}>
           <Ionicons name="medkit" size={24} color={COLORS.primary} />
           <Text style={styles.iconLabel}>Treatment</Text>
         </TouchableOpacity>

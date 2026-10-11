@@ -47,24 +47,21 @@ export const login = createAsyncThunk<
 
 export const signup = createAsyncThunk<
   User,
-  { email: string; password: string; username: string; },
+  { email: string; password: string; username: string },
   { rejectValue: string }
->(
-  "auth/signup",
-  async ({ email, password, username }, { rejectWithValue }) => {
-    try {
-      const user = await requestWithRetry({
-        method: "post",
-        url: "/register",
-        data: { email, password, username },
-      });
-      await AsyncStorage.setItem("user", JSON.stringify(user));
-      return user;
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error, "Signup failed"));
-    }
+>("auth/signup", async ({ email, password, username }, { rejectWithValue }) => {
+  try {
+    const user = await requestWithRetry({
+      method: "post",
+      url: "/register",
+      data: { email, password, username },
+    });
+    await AsyncStorage.setItem("user", JSON.stringify(user));
+    return user;
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error, "Signup failed"));
   }
-);
+});
 
 export const verifyRegistrationOTP = createAsyncThunk<
   void,
@@ -82,42 +79,36 @@ export const verifyRegistrationOTP = createAsyncThunk<
   }
 });
 
-export const forgotPassword = createAsyncThunk<
-  void,
-  { email: string },
-  { rejectValue: string }
->("auth/forgotPassword", async ({ email }, { rejectWithValue }) => {
-  try {
-    await requestWithRetry({
-      method: "post",
-      url: "/forgot-password",
-      data: { email },
-    });
-  } catch (error) {
-    return rejectWithValue(getErrorMessage(error, "Failed to send reset OTP."));
+export const forgotPassword = createAsyncThunk<void, { email: string }, { rejectValue: string }>(
+  "auth/forgotPassword",
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      await requestWithRetry({
+        method: "post",
+        url: "/forgot-password",
+        data: { email },
+      });
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error, "Failed to send reset OTP."));
+    }
   }
-});
+);
 
 export const resetPassword = createAsyncThunk<
   void,
   { email: string; otp: string; newPassword: string },
   { rejectValue: string }
->(
-  "auth/resetPassword",
-  async ({ email, otp, newPassword }, { rejectWithValue }) => {
-    try {
-      await requestWithRetry({
-        method: "post",
-        url: "/reset-password",
-        data: { email, otp, newPassword },
-      });
-    } catch (error) {
-      return rejectWithValue(
-        getErrorMessage(error, "Failed to reset password.")
-      );
-    }
+>("auth/resetPassword", async ({ email, otp, newPassword }, { rejectWithValue }) => {
+  try {
+    await requestWithRetry({
+      method: "post",
+      url: "/reset-password",
+      data: { email, otp, newPassword },
+    });
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error, "Failed to reset password."));
   }
-);
+});
 
 export const verifyOTP = createAsyncThunk<
   void,
@@ -139,25 +130,22 @@ export const logout = createAsyncThunk<null, void>("auth/logout", async () => {
   try {
     await AsyncStorage.removeItem("user");
     return null;
-  } catch (error) {
+  } catch {
     return Promise.reject("Logout failed");
   }
 });
 
-export const fetchUser = createAsyncThunk<User | null, void>(
-  "auth/fetchUser",
-  async () => {
-    try {
-      const userString = await AsyncStorage.getItem("user");
-      if (userString) {
-        return JSON.parse(userString);
-      }
-      return null;
-    } catch (error) {
-      return Promise.reject("Failed to fetch user");
+export const fetchUser = createAsyncThunk<User | null, void>("auth/fetchUser", async () => {
+  try {
+    const userString = await AsyncStorage.getItem("user");
+    if (userString) {
+      return JSON.parse(userString);
     }
+    return null;
+  } catch {
+    return Promise.reject("Failed to fetch user");
   }
-);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -255,8 +243,7 @@ const authSlice = createSlice({
   },
 });
 
-export const selectIsLoggedIn = (state: { auth: AuthState }) =>
-  state.auth.isLoggedIn;
+export const selectIsLoggedIn = (state: { auth: AuthState }) => state.auth.isLoggedIn;
 export const selectUser = (state: { auth: AuthState }) => state.auth.user;
 export const selectLoading = (state: { auth: AuthState }) => state.auth.loading;
 export const selectError = (state: { auth: AuthState }) => state.auth.error;

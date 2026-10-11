@@ -1,13 +1,10 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import React from "react";
 
 const ComingSoon = () => {
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../assets/images/comingSoon.png")}
-        style={styles.image}
-      />
+      <Image source={require("../assets/images/comingSoon.png")} style={styles.image} />
       {/* <Text style={styles.text}>Coming Soon</Text> */}
     </View>
   );
