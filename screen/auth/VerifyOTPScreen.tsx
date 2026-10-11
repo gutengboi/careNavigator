@@ -85,7 +85,11 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
                     maxLength={1}
                     onChangeText={(text) => {
                       setFieldValue("otp", values.otp.charAt(0) + text + values.otp.slice(2));
-                      text ? input3Ref.current?.focus() : input1Ref.current?.focus();
+                      if (text) {
+                        input3Ref.current?.focus();
+                      } else {
+                        input1Ref.current?.focus();
+                      }
                     }}
                   />
                   <TextInput
@@ -95,7 +99,11 @@ const VerifyOTPScreen = ({ route, navigation }: VerifyOTPProps) => {
                     maxLength={1}
                     onChangeText={(text) => {
                       setFieldValue("otp", values.otp.slice(0, 2) + text + values.otp.slice(3));
-                      text ? input4Ref.current?.focus() : input2Ref.current?.focus();
+                      if (text) {
+                        input4Ref.current?.focus();
+                      } else {
+                        input2Ref.current?.focus();
+                      }
                     }}
                   />
                   <TextInput

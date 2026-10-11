@@ -28,6 +28,9 @@ export type RootStackParamList = {
 
 declare global {
   namespace ReactNavigation {
+    // React Navigation's documented pattern for typing every untyped
+    // useNavigation()/navigate() call app-wide — the empty body is required.
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface RootParamList extends RootStackParamList {}
   }
 }

@@ -1,22 +1,15 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, {
-  useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import * as LocalAuthentication from 'expo-local-authentication'
+import * as LocalAuthentication from "expo-local-authentication";
 
 const Page = () => {
   const [code, setCode] = useState<number[]>([]);
@@ -24,11 +17,6 @@ const Page = () => {
   const router = useRouter();
 
   const offset = useSharedValue(0);
-  const style = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: offset.value }],
-    };
-  });
 
   const OFFSET = 20;
   const TIME = 80;
@@ -50,7 +38,7 @@ const Page = () => {
         }
       }
     }
-  }, [code]);
+  }, [code, offset, router]);
 
   const onNumberPress = (number: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -64,10 +52,10 @@ const Page = () => {
 
   const onBiometricPress = async () => {
     const { success } = await LocalAuthentication.authenticateAsync();
-    if(success) {
-        router.replace('/');
+    if (success) {
+      router.replace("/");
     } else {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     }
   };
   return (
@@ -77,10 +65,7 @@ const Page = () => {
         {codeLength.map((_, index) => (
           <View
             key={index}
-            style={[
-              styles.codeEmpty,
-              { backgroundColor: code[index] ? "#3D38ED" : "#D8DCE2" },
-            ]}
+            style={[styles.codeEmpty, { backgroundColor: code[index] ? "#3D38ED" : "#D8DCE2" }]}
           />
         ))}
       </Animated.View>
@@ -88,10 +73,7 @@ const Page = () => {
       <View style={styles.numberView}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           {[1, 2, 3].map((number) => (
-            <TouchableOpacity
-              key={number}
-              onPress={() => onNumberPress(number)}
-            >
+            <TouchableOpacity key={number} onPress={() => onNumberPress(number)}>
               <Text style={styles.number}>{number}</Text>
             </TouchableOpacity>
           ))}
@@ -99,10 +81,7 @@ const Page = () => {
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           {[4, 5, 6].map((number) => (
-            <TouchableOpacity
-              key={number}
-              onPress={() => onNumberPress(number)}
-            >
+            <TouchableOpacity key={number} onPress={() => onNumberPress(number)}>
               <Text style={styles.number}>{number}</Text>
             </TouchableOpacity>
           ))}
@@ -110,10 +89,7 @@ const Page = () => {
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           {[7, 8, 9].map((number) => (
-            <TouchableOpacity
-              key={number}
-              onPress={() => onNumberPress(number)}
-            >
+            <TouchableOpacity key={number} onPress={() => onNumberPress(number)}>
               <Text style={styles.number}>{number}</Text>
             </TouchableOpacity>
           ))}
@@ -126,11 +102,7 @@ const Page = () => {
           }}
         >
           <TouchableOpacity onPress={onBiometricPress}>
-            <MaterialCommunityIcons
-              name="face-recognition"
-              size={26}
-              color="black"
-            />
+            <MaterialCommunityIcons name="face-recognition" size={26} color="black" />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => onNumberPress(0)}>
@@ -140,11 +112,7 @@ const Page = () => {
           <View style={{ minWidth: 30 }}>
             {code.length > 0 && (
               <TouchableOpacity onPress={numberBackspace}>
-                <MaterialCommunityIcons
-                  name="backspace-outline"
-                  size={26}
-                  color="black"
-                />
+                <MaterialCommunityIcons name="backspace-outline" size={26} color="black" />
               </TouchableOpacity>
             )}
           </View>

@@ -1,10 +1,4 @@
-import {
-  ColorSchemeName,
-  StyleSheet,
-  Switch,
-  View,
-  useColorScheme,
-} from "react-native";
+import { ColorSchemeName, StyleSheet, Switch, View, useColorScheme } from "react-native";
 import React, { useCallback, useContext, useEffect } from "react";
 import DarkMode from "@/components/darkmode.context";
 import { Card, Text } from "@/utils/Theme";
@@ -27,13 +21,13 @@ const Apptheme = () => {
 
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode(!isDarkMode);
-  }, [isDarkMode, scheme, useDeviceSettings]);
+  }, [isDarkMode, setIsDarkMode]);
 
   useEffect(() => {
     if (currentActivatedTheme !== scheme) {
       setUseDeviceSettings(false);
     }
-  }, [isDarkMode, useDeviceSettings]);
+  }, [isDarkMode, useDeviceSettings, currentActivatedTheme, scheme, setUseDeviceSettings]);
 
   return (
     <View>
