@@ -16,7 +16,9 @@ describe("login thunk - remember me persistence", () => {
   const user = { email: "a@b.com", username: "a" };
 
   beforeEach(() => {
-    (requestWithRetry as jest.Mock).mockReset().mockResolvedValue(user);
+    (requestWithRetry as jest.Mock)
+      .mockReset()
+      .mockResolvedValue({ appToken: "token", streamToken: "stream-token", user });
   });
 
   it("persists the user to AsyncStorage when rememberMe is true", async () => {

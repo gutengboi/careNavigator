@@ -8,6 +8,12 @@ interface User {
   location?: string;
 }
 
+interface LoginResponse {
+  appToken: string;
+  streamToken: string;
+  user: User;
+}
+
 interface AuthState {
   isLoggedIn: boolean;
   user: User | null;
@@ -32,7 +38,7 @@ export const login = createAsyncThunk<
   { rejectValue: string }
 >("auth/login", async ({ email, password, rememberMe }, { rejectWithValue }) => {
   try {
-    const user = await requestWithRetry({
+    const { user } = await requestWithRetry<LoginResponse>({
       method: "post",
       url: "/login",
       data: { email, password },
@@ -57,11 +63,18 @@ export const signup = createAsyncThunk<
   { rejectValue: string }
 >("auth/signup", async ({ email, password, username }, { rejectWithValue }) => {
   try {
-    const user = await requestWithRetry({
+    // /register only returns a confirmation message (the account isn't
+    // verified yet), so build the user from what we already know rather
+    // than from the response body.
+    const response = await requestWithRetry<{ otp?: string }>({
       method: "post",
       url: "/register",
       data: { email, password, username },
     });
+    if (__DEV__ && response?.otp) {
+      console.log("[DEV] Registration OTP:", response.otp);
+    }
+    const user: User = { email, username };
     await AsyncStorage.setItem("user", JSON.stringify(user));
     return user;
   } catch (error) {
@@ -77,7 +90,7 @@ export const verifyRegistrationOTP = createAsyncThunk<
   try {
     await requestWithRetry({
       method: "post",
-      url: "/verify-registration-otp",
+      url: "/verify-registration-Otp",
       data: { email, otp },
     });
   } catch (error) {
@@ -89,11 +102,14 @@ export const forgotPassword = createAsyncThunk<void, { email: string }, { reject
   "auth/forgotPassword",
   async ({ email }, { rejectWithValue }) => {
     try {
-      await requestWithRetry({
+      const response = await requestWithRetry<{ otp?: string }>({
         method: "post",
         url: "/forgot-password",
         data: { email },
       });
+      if (__DEV__ && response?.otp) {
+        console.log("[DEV] Password reset OTP:", response.otp);
+      }
     } catch (error) {
       return rejectWithValue(getErrorMessage(error, "Failed to send reset OTP."));
     }
