@@ -17,6 +17,10 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/authSlice";
 import DarkMode from "@/components/darkmode.context";
 import type { AppDispatch } from "@/store/store";
+import type { CompositeScreenProps } from "@react-navigation/native";
+import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { BottomTabParamList, RootStackParamList } from "@/types/navigation";
 
 interface MenuItemProps {
   icon: {
@@ -50,12 +54,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
         <IconComponent name={icon.name as any} size={24} color={iconColor} />
       </View>
       <View style={styles.menuItemText}>
-        <Text style={[styles.menuItemTitle, { color: titleColor }]}>
-          {title}
-        </Text>
-        <Text style={[styles.menuItemDescription, { color: descriptionColor }]}>
-          {description}
-        </Text>
+        <Text style={[styles.menuItemTitle, { color: titleColor }]}>{title}</Text>
+        <Text style={[styles.menuItemDescription, { color: descriptionColor }]}>{description}</Text>
       </View>
       <Entypo name="chevron-right" size={24} color={iconColor} />
     </TouchableOpacity>
@@ -74,9 +74,10 @@ const getIconComponent = (type: string) => {
       return MaterialIcons;
   }
 };
-interface ProfileProps {
-  navigation: any
-}
+type ProfileProps = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList, "Profile">,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 const Profile = ({ navigation }: ProfileProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -105,20 +106,12 @@ const Profile = ({ navigation }: ProfileProps) => {
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: isDarkMode ? "#121212" : "#F5F5F5" },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: isDarkMode ? "#121212" : "#F5F5F5" }]}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <View style={styles.headerBackground} />
           <View style={styles.imageContainer}>
-            <Image
-              source={require("../../assets/images/person.png")}
-              style={styles.profile}
-            />
+            <Image source={require("../../assets/images/person.png")} style={styles.profile} />
           </View>
         </View>
         <View style={styles.cameraIcon}>
@@ -255,9 +248,7 @@ const Profile = ({ navigation }: ProfileProps) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              Are you sure you want to log out?
-            </Text>
+            <Text style={styles.modalText}>Are you sure you want to log out?</Text>
             <View style={styles.modalButtons}>
               <Pressable
                 style={[styles.button, styles.buttonCancel]}
@@ -265,10 +256,7 @@ const Profile = ({ navigation }: ProfileProps) => {
               >
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonConfirm]}
-                onPress={confirmLogout}
-              >
+              <Pressable style={[styles.button, styles.buttonConfirm]} onPress={confirmLogout}>
                 <Text style={styles.textStyle}>Log Out</Text>
               </Pressable>
             </View>
@@ -327,9 +315,9 @@ const styles = StyleSheet.create({
   },
   section2: {
     marginTop: 20,
-    marginBottom: 35
+    marginBottom: 35,
   },
-  
+
   sectionTitle: {
     fontSize: 16,
     fontWeight: "bold",

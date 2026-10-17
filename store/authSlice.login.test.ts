@@ -6,6 +6,8 @@ import { requestWithRetry } from "../utils/apiClient";
 jest.mock("../utils/apiClient", () => ({
   requestWithRetry: jest.fn(),
   getErrorMessage: (_error: unknown, fallback: string) => fallback,
+  setAuthToken: jest.fn(),
+  setStreamToken: jest.fn(),
 }));
 
 function createTestStore() {

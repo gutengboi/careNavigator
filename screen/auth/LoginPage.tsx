@@ -20,13 +20,18 @@ import { COLORS, SIZES } from "../../constants/index";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/authSlice";
 import type { AppDispatch } from "../../store/store";
+import { inputWrapper } from "./authStyles";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
+
+type LoginPageProps = NativeStackScreenProps<RootStackParamList, "Login">;
 
 interface FormValues {
   email: string;
   password: string;
 }
 
-const LoginPage = ({ navigation }: { navigation: any }) => {
+const LoginPage = ({ navigation }: LoginPageProps) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -198,17 +203,6 @@ const LoginPage = ({ navigation }: { navigation: any }) => {
     </ScrollView>
   );
 };
-
-const inputWrapper = (borderColor: string) => ({
-  borderColor: borderColor,
-  backgroundColor: COLORS.lightWhite,
-  borderWidth: 1,
-  height: 50,
-  borderRadius: 12,
-  flexDirection: "row" as const,
-  paddingHorizontal: 15,
-  alignItems: "center" as const,
-});
 
 const styles = StyleSheet.create({
   cover: {

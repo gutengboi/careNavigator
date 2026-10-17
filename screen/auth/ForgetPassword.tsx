@@ -19,8 +19,13 @@ import { BackBtn, Button } from "@/components";
 import { COLORS, SIZES } from "@/constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import type { AppDispatch } from "@/store/store";
+import { inputWrapper } from "./authStyles";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-const ForgetPassword = ({ navigation }: { navigation: any }) => {
+type ForgetPasswordProps = NativeStackScreenProps<RootStackParamList, "ForgetPassword">;
+
+const ForgetPassword = ({ navigation }: ForgetPasswordProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useSelector((state: any) => state.auth);
   const [modalVisible, setModalVisible] = React.useState(false); // State for Modal visibility
@@ -117,17 +122,6 @@ const ForgetPassword = ({ navigation }: { navigation: any }) => {
     </KeyboardAvoidingView>
   );
 };
-
-const inputWrapper = (borderColor: string) => ({
-  borderColor: borderColor,
-  backgroundColor: COLORS.lightWhite,
-  borderWidth: 1,
-  height: 50,
-  borderRadius: 12,
-  flexDirection: "row" as const,
-  paddingHorizontal: 15,
-  alignItems: "center" as const,
-});
 
 const styles = StyleSheet.create({
   container: { padding: 20 },

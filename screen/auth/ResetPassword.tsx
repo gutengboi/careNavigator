@@ -10,6 +10,7 @@ import { BackBtn, Button } from "@/components"; // Use your custom Button compon
 import { RootState, AppDispatch } from "@/store/store"; // Adjust if needed
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "@/types/navigation";
+import { inputWrapper } from "./authStyles";
 
 type ResetPasswordProps = NativeStackScreenProps<RootStackParamList, "ResetPassword">;
 
@@ -143,17 +144,6 @@ const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
     </ScrollView>
   );
 };
-
-const inputWrapper = (borderColor: string) => ({
-  borderColor: borderColor,
-  backgroundColor: COLORS.lightWhite,
-  borderWidth: 1,
-  height: 50,
-  borderRadius: 12,
-  flexDirection: "row" as const,
-  paddingHorizontal: 15,
-  alignItems: "center" as const,
-});
 
 const styles = StyleSheet.create({
   container: {

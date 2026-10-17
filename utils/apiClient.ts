@@ -12,14 +12,41 @@ export const apiClient = axios.create({
   timeout: 20000,
 });
 
+// Populated after login/signup (and restored from AsyncStorage on launch) so
+// every request automatically authenticates as the current user.
+let authToken: string | null = null;
+
+export function setAuthToken(token: string | null) {
+  authToken = token;
+}
+
+// GetStream chat token for the logged-in user. Nothing initializes a chat
+// client yet, but we hold onto it here instead of discarding it so that
+// feature can read it once it exists.
+let streamToken: string | null = null;
+
+export function setStreamToken(token: string | null) {
+  streamToken = token;
+}
+
+export function getStreamToken() {
+  return streamToken;
+}
+
+apiClient.interceptors.request.use((config) => {
+  if (authToken) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${authToken}`;
+  }
+  return config;
+});
+
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const isRetryable = (error: any) =>
   !error.response || RETRYABLE_STATUS_CODES.includes(error.response.status);
 
-export async function requestWithRetry<T = any>(
-  config: AxiosRequestConfig
-): Promise<T> {
+export async function requestWithRetry<T = any>(config: AxiosRequestConfig): Promise<T> {
   const startedAt = Date.now();
   let lastError: any;
 

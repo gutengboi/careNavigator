@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-const CancellationReasonScreen = ({ navigation }: { navigation: any }) => {
+type CancellationReasonScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  "CancelAppointment"
+>;
+
+const CancellationReasonScreen = ({ navigation }: CancellationReasonScreenProps) => {
   const [selectedReason, setSelectedReason] = useState("");
   const [customReason, setCustomReason] = useState("");
 

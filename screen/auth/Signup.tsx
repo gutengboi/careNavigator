@@ -20,8 +20,13 @@ import { COLORS, SIZES } from "../../constants/index";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../../store/authSlice";
 import type { AppDispatch } from "../../store/store";
+import { inputWrapper } from "./authStyles";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-const Signup = ({ navigation }: { navigation: any }) => {
+type SignupProps = NativeStackScreenProps<RootStackParamList, "Signup">;
+
+const Signup = ({ navigation }: SignupProps) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: any) => state.auth);
@@ -192,17 +197,6 @@ const Signup = ({ navigation }: { navigation: any }) => {
     </ScrollView>
   );
 };
-
-const inputWrapper = (borderColor: string) => ({
-  borderColor: borderColor,
-  backgroundColor: COLORS.lightWhite,
-  borderWidth: 1,
-  height: 50,
-  borderRadius: 12,
-  flexDirection: "row" as const,
-  paddingHorizontal: 15,
-  alignItems: "center" as const,
-});
 
 const styles = StyleSheet.create({
   cover: {

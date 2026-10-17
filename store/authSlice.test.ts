@@ -43,10 +43,10 @@ describe("authSlice", () => {
     expect(state.error).toBeNull();
   });
 
-  it("signup.fulfilled logs the user in just like login", () => {
+  it("signup.fulfilled stores the user but does not log them in (account isn't verified yet)", () => {
     const user = { email: "new@b.com", username: "new" };
     const state = authReducer(initialState, { type: signup.fulfilled.type, payload: user });
-    expect(state.isLoggedIn).toBe(true);
+    expect(state.isLoggedIn).toBe(false);
     expect(state.user).toEqual(user);
   });
 

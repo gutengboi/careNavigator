@@ -1,11 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { Platform } from "react-native";
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/index";
 import { Home, Profile, Create, Explore } from "@/screen/bottomNavScreen";
+import type { BottomTabParamList } from "@/types/navigation";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const screenOptions: React.ComponentProps<typeof Tab.Navigator>["screenOptions"] = ({ route }) => ({
   tabBarShowLabel: true,
@@ -32,19 +33,17 @@ const screenOptions: React.ComponentProps<typeof Tab.Navigator>["screenOptions"]
     shadowRadius: 0, // Remove the shadow on iOS
   },
   tabBarIcon: ({ focused, color, size }) => {
-    let iconName;
-
     if (route.name === "Home") {
-      iconName = focused ? "home" : "home";
+      return <Ionicons name={focused ? "home" : "home-outline"} size={size} color={color} />;
     } else if (route.name === "Create") {
       return <Ionicons name={"notifications-outline"} size={size} color={color} />;
     } else if (route.name === "Explore") {
       return <Feather name={"compass"} size={size} color={color} />;
     } else if (route.name === "Profile") {
-      iconName = focused ? "user" : "user";
+      return <Ionicons name={focused ? "person" : "person-outline"} size={size} color={color} />;
     }
 
-    return <AntDesign name={iconName as any} size={size} color={color} />;
+    return null;
   },
   tabBarLabelStyle: {
     fontSize: 12,

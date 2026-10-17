@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // For star icons
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-const ReviewScreen = ({ navigation }: { navigation: any }) => {
+type ReviewScreenProps = NativeStackScreenProps<RootStackParamList, "ReviewScreen">;
+
+const ReviewScreen = ({ navigation }: ReviewScreenProps) => {
   const [rating, setRating] = useState(0); // State for star rating
   const [comment, setComment] = useState(""); // State for user comment
 

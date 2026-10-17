@@ -1,8 +1,12 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { COLORS } from "@/constants"; // Assuming you have a color scheme defined
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/types/navigation";
 
-const HealthSummaryScreen = ({ navigation }: { navigation: any }) => {
+type HealthSummaryScreenProps = NativeStackScreenProps<RootStackParamList, "HealthSummary">;
+
+const HealthSummaryScreen = ({ navigation }: HealthSummaryScreenProps) => {
   return (
     <ScrollView style={styles.container}>
       {/* User Info */}

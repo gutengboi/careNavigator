@@ -1,3 +1,10 @@
+export type BottomTabParamList = {
+  Home: undefined;
+  Create: undefined;
+  Explore: undefined;
+  Profile: undefined;
+};
+
 export type RootStackParamList = {
   Login: undefined;
   BottomNavigation: undefined;
