@@ -57,6 +57,44 @@ target 'careNavigator' do
       :ccache_enabled => podfile_properties['apple.ccacheEnabled'] == 'true',
     )
 
+    # Newer Xcode/Clang trips a consteval regression in the fmt pod bundled
+    # by this RN version ("call to consteval function ... is not a constant
+    # expression" in format-inl.h). fmt's FMT_USE_CONSTEVAL macro chain
+    # unconditionally #defines itself (no #ifndef guard), so a command-line
+    # -D override gets clobbered; patch the vendored header directly to force
+    # the non-consteval branch instead.
+    fmt_header = File.join(installer.sandbox.pod_dir('fmt'), 'include', 'fmt', 'base.h')
+    if File.exist?(fmt_header)
+      contents = File.read(fmt_header)
+      patched = contents.sub(
+        "#if FMT_USE_CONSTEVAL\n#  define FMT_CONSTEVAL consteval\n#  define FMT_CONSTEXPR20 constexpr\n#else\n#  define FMT_CONSTEVAL\n#  define FMT_CONSTEXPR20\n#endif",
+        "#define FMT_CONSTEVAL\n#define FMT_CONSTEXPR20"
+      )
+      if patched != contents
+        File.chmod(0644, fmt_header)
+        File.write(fmt_header, patched)
+      end
+    end
+
+    # react_native_post_install doesn't raise pod deployment targets in this
+    # RN version, so pods below min_ios_version_supported (15.1) fail the
+    # build under newer Xcode/simulator SDKs.
+    installer.target_installation_results.pod_target_installation_results
+      .each do |pod_name, target_installation_result|
+      target_installation_result.native_target.build_configurations.each do |config|
+        old_target = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] =
+          [15.1, old_target.to_f].max.to_s
+      end
+      target_installation_result.resource_bundle_targets.each do |resource_bundle_target|
+        resource_bundle_target.build_configurations.each do |config|
+          old_target = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] =
+            [15.1, old_target.to_f].max.to_s
+        end
+      end
+    end
+
     # This is necessary for Xcode 14, because it signs resource bundles by default
     # when building for devices.
     installer.target_installation_results.pod_target_installation_results
